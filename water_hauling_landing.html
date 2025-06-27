@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AquaFresh Potable Water - Professional Bulk Water Hauling Services</title>
+    <link rel="stylesheet" href="styles.css"
+</head>
+<body>
+    <div class="bg-animation"></div>
+    
+    <!-- Navigation -->
+    <nav class="nav" id="nav">
+        <div class="nav-content">
+            <div class="logo">AquaFresh</div>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="floating-element">💧</div>
+        <div class="floating-element">🚛</div>
+        <div class="floating-element">⚡</div>
+        
+        <div class="hero-content">
+            <h1>Professional Bulk Water Hauling</h1>
+            <p>Reliable, clean, and efficient water delivery services for construction, agriculture, and emergency needs. Available 24/7 across the region.</p>
+            <div class="cta-buttons">
+                <a href="#contact" class="btn btn-primary">Get Quote Now</a>
+                <a href="#services" class="btn btn-secondary">Our Services</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="services" id="services">
+        <div class="section-header">
+            <h2>Our Water Hauling Services</h2>
+            <p>Professional water delivery solutions tailored to meet your specific needs with guaranteed quality and reliability.</p>
+        </div>
+        
+        <div class="services-grid">
+            <div class="service-card">
+                <div class="service-icon">🏗️</div>
+                <h3>Construction Sites</h3>
+                <p>Clean potable water delivery for construction projects, dust suppression, and concrete mixing. Flexible scheduling to match your project timeline.</p>
+            </div>
+            
+            <div class="service-card">
+                <div class="service-icon">🌾</div>
+                <h3>Agricultural Use</h3>
+                <p>Bulk water supply for livestock, irrigation systems, and crop spraying. Supporting farming operations with reliable water access.</p>
+            </div>
+            
+            <div class="service-card">
+                <div class="service-icon">🚨</div>
+                <h3>Emergency Services</h3>
+                <p>24/7 emergency water delivery for power outages, well failures, and disaster response. Immediate response when you need it most.</p>
+            </div>
+            
+            <div class="service-card">
+                <div class="service-icon">🏭</div>
+                <h3>Industrial Applications</h3>
+                <p>High-volume water delivery for industrial processes, equipment cleaning, and facility maintenance. Customized solutions for your operations.</p>
+            </div>
+            
+            <div class="service-card">
+                <div class="service-icon">🏘️</div>
+                <h3>Residential Services</h3>
+                <p>Pool filling, well water backup, and special events. Clean, treated water delivered directly to your property.</p>
+            </div>
+            
+            <div class="service-card">
+                <div class="service-icon">🎪</div>
+                <h3>Events & Venues</h3>
+                <p>Water supply for outdoor events, festivals, and temporary facilities. Ensuring your event has adequate clean water access.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact" id="contact">
+        <div class="contact-content">
+            <div class="section-header">
+                <h2>Get Your Water Delivered Today</h2>
+                <p>Contact us for immediate service or to discuss your bulk water hauling needs. We provide free quotes and flexible scheduling.</p>
+            </div>
+            
+            <div class="contact-info">
+                <div class="contact-item">
+                    <h4>Phone</h4>
+                    <p>Call for immediate service<br><strong>(555) 123-WATER</strong></p>
+                </div>
+                
+                <div class="contact-item">
+                    <h4>Email</h4>
+                    <p>Get a quote online<br><strong>info@aquafreshwater.com</strong></p>
+                </div>
+                
+                <div class="contact-item">
+                    <h4>Service Area</h4>
+                    <p>Regional coverage<br><strong>50+ mile radius</strong></p>
+                </div>
+                
+                <div class="contact-item">
+                    <h4>Hours</h4>
+                    <p>Emergency available<br><strong>24/7 Service</strong></p>
+                </div>
+            </div>
+            
+            <div style="margin-top: 3rem;">
+                <a href="tel:555123WATER" class="btn btn-primary">Call Now for Service</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2024 AquaFresh Potable Water. Licensed and insured bulk water hauling services.</p>
+    </footer>
+
+    <!-- .contentData = imported;
+                            this.saveToMemory();
+                            location.reload(); // Reload to show imported content
+                        } catch (error) {
+                            this.showNotification('Error importing file! ❌');
+                        }
+                    };
+                    reader.readAsText(file);
+                }
+            }
+
+            showNotification(message) {
+                const notification = document.createElement('div');
+                notification.innerHTML = message;
+                notification.style.cssText = `
+                    position: fixed;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    background: white;
+                    color: #1e293b;
+                    padding: 20px 30px;
+                    border-radius: 15px;
+                    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+                    z-index: 10001;
+                    font-weight: bold;
+                `;
+                
+                document.body.appendChild(notification);
+                setTimeout(() => notification.remove(), 2000);
+            }
+        }
+
+        // Initialize content manager
+        const contentManager = new SimpleContentManager();
+
+        // Original functionality
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Navigation background on scroll
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('nav');
+            if (window.scrollY > 100) {
+                nav.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
+            }
+        });
+
+        // Add entrance animations to service cards
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.service-card').forEach((card, index) => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(50px)';
+            card.style.transition = `opacity 0.6s ease ${index * 0.1}s, transform 0.6s ease ${index * 0.1}s`;
+            observer.observe(card);
+        });
+
+        // Parallax effect for floating elements
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const rate = scrolled * -0.5;
+            
+            document.querySelectorAll('.floating-element').forEach((element, index) => {
+                const speed = 0.5 + (index * 0.1);
+                element.style.transform = `translateY(${rate * speed}px) rotate(${scrolled * 0.01}deg)`;
+            });
+        });
+    </script> -->
+    <script src="script.js"></script>
+
+</body>
+</html>
