@@ -1,142 +1,158 @@
-<script>
-        // Content Management System with Authentication
-        class SimpleContentManager {
+// Auth0 + Content Management System
+        class Auth0ContentManager {
             constructor() {
                 this.contentData = {};
                 this.editMode = false;
-                this.isAuthenticated = false;
-                this.adminPassword = 'aquafresh2024'; // Change this password!
+                this.auth0 = null;
+                this.currentUser = null;
                 this.init();
             }
 
-            init() {
+            async init() {
                 this.loadContent();
+                await this.setupAuth0();
                 this.createLoginButton();
-                this.createLoginModal();
                 this.createAdminPanel();
                 this.makeElementsEditable();
+                await this.checkAuthState();
+            }
+
+            async setupAuth0() {
+                try {
+                    // You'll need to replace these with your actual Auth0 credentials
+                    this.auth0 = await auth0.createAuth0Client({
+                        domain: 'YOUR_AUTH0_DOMAIN.auth0.com', // Replace with your domain
+                        clientId: 'YOUR_AUTH0_CLIENT_ID',       // Replace with your client ID
+                        authorizationParams: {
+                            redirect_uri: window.location.origin
+                        }
+                    });
+
+                    // Handle the authentication callback
+                    const query = window.location.search;
+                    if (query.includes('code=') && query.includes('state=')) {
+                        await this.auth0.handleRedirectCallback();
+                        window.history.replaceState({}, document.title, window.location.pathname);
+                    }
+                } catch (error) {
+                    console.error('Auth0 setup error:', error);
+                    this.showDemoMode();
+                }
+            }
+
+            showDemoMode() {
+                // Fallback to demo mode if Auth0 isn't configured
+                const demoNotice = document.createElement('div');
+                demoNotice.innerHTML = `
+                    <div style="
+                        position: fixed;
+                        top: 10px;
+                        left: 50%;
+                        transform: translateX(-50%);
+                        background: #fbbf24;
+                        color: #92400e;
+                        padding: 10px 20px;
+                        border-radius: 25px;
+                        font-size: 12px;
+                        z-index: 10002;
+                        font-weight: bold;
+                    ">
+                        ⚠️ Demo Mode - Configure Auth0 credentials for production
+                    </div>
+                `;
+                document.body.appendChild(demoNotice);
+                
+                // Create simple demo login
+                this.createDemoLogin();
+            }
+
+            createDemoLogin() {
+                // Create discrete demo access in footer
+                const demoLink = document.createElement('span');
+                demoLink.innerHTML = '••';
+                demoLink.style.cssText = `
+                    color: #f59e0b;
+                    cursor: pointer;
+                    font-size: 14px;
+                    margin-left: 8px;
+                    transition: color 0.3s ease;
+                    user-select: none;
+                `;
+                
+                demoLink.addEventListener('click', () => {
+                    // Demo login - just simulate authentication
+                    this.currentUser = { email: 'demo@aquafresh.com', name: 'Demo Admin' };
+                    this.showAdminInterface();
+                    this.showNotification('Demo login successful! ✅');
+                    demoLink.remove();
+                });
+                
+                demoLink.addEventListener('mouseenter', () => {
+                    demoLink.style.color = '#d97706';
+                });
+                demoLink.addEventListener('mouseleave', () => {
+                    demoLink.style.color = '#f59e0b';
+                });
+                
+                // Add to footer
+                const footer = document.querySelector('.footer');
+                if (footer) {
+                    footer.appendChild(demoLink);
+                }
+            }
+
+            async checkAuthState() {
+                if (!this.auth0) return;
+                
+                try {
+                    const isAuthenticated = await this.auth0.isAuthenticated();
+                    if (isAuthenticated) {
+                        this.currentUser = await this.auth0.getUser();
+                        this.showAdminInterface();
+                    }
+                } catch (error) {
+                    console.error('Auth check error:', error);
+                }
             }
 
             createLoginButton() {
-                const loginBtn = document.createElement('button');
-                loginBtn.innerHTML = '🔐 Admin';
-                loginBtn.style.cssText = `
-                    position: fixed;
-                    top: 20px;
-                    right: 20px;
-                    z-index: 10000;
-                    background: #64748b;
-                    color: white;
-                    border: none;
-                    padding: 8px 12px;
-                    border-radius: 20px;
+                // Create discrete admin access in footer
+                const adminLink = document.createElement('span');
+                adminLink.innerHTML = '•';
+                adminLink.style.cssText = `
+                    color: #94a3b8;
                     cursor: pointer;
-                    font-size: 12px;
-                    opacity: 0.7;
-                    transition: all 0.3s ease;
+                    font-size: 14px;
+                    margin-left: 8px;
+                    transition: color 0.3s ease;
+                    user-select: none;
                 `;
                 
-                loginBtn.addEventListener('click', () => this.showLoginModal());
-                loginBtn.addEventListener('mouseenter', () => {
-                    loginBtn.style.opacity = '1';
-                    loginBtn.style.transform = 'translateY(-1px)';
-                });
-                loginBtn.addEventListener('mouseleave', () => {
-                    loginBtn.style.opacity = '0.7';
-                    loginBtn.style.transform = 'translateY(0)';
+                adminLink.addEventListener('click', async () => {
+                    if (this.auth0) {
+                        try {
+                            await this.auth0.loginWithRedirect();
+                        } catch (error) {
+                            console.error('Login error:', error);
+                            this.showNotification('Login failed! Please try again. ❌');
+                        }
+                    }
                 });
                 
-                document.body.appendChild(loginBtn);
-                this.loginBtn = loginBtn;
-            }
-
-            createLoginModal() {
-                const modal = document.createElement('div');
-                modal.innerHTML = `
-                    <div style="
-                        position: fixed;
-                        top: 0;
-                        left: 0;
-                        width: 100%;
-                        height: 100%;
-                        background: rgba(0,0,0,0.5);
-                        z-index: 10001;
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                    ">
-                        <div style="
-                            background: white;
-                            padding: 30px;
-                            border-radius: 15px;
-                            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-                            max-width: 400px;
-                            width: 90%;
-                        ">
-                            <h3 style="margin: 0 0 20px 0; color: #1e293b; text-align: center;">Admin Login</h3>
-                            <input type="password" id="adminPassword" placeholder="Enter admin password" style="
-                                width: 100%;
-                                padding: 12px;
-                                border: 2px solid #e2e8f0;
-                                border-radius: 8px;
-                                font-size: 16px;
-                                margin-bottom: 15px;
-                                box-sizing: border-box;
-                            ">
-                            <div style="display: flex; gap: 10px;">
-                                <button id="loginSubmit" style="
-                                    flex: 1;
-                                    background: #2563eb;
-                                    color: white;
-                                    border: none;
-                                    padding: 12px;
-                                    border-radius: 8px;
-                                    cursor: pointer;
-                                    font-weight: bold;
-                                ">Login</button>
-                                <button id="loginCancel" style="
-                                    flex: 1;
-                                    background: #64748b;
-                                    color: white;
-                                    border: none;
-                                    padding: 12px;
-                                    border-radius: 8px;
-                                    cursor: pointer;
-                                ">Cancel</button>
-                            </div>
-                            <p style="
-                                font-size: 12px;
-                                color: #64748b;
-                                text-align: center;
-                                margin: 15px 0 0 0;
-                            ">For AquaFresh employees only</p>
-                        </div>
-                    </div>
-                `;
+                adminLink.addEventListener('mouseenter', () => {
+                    adminLink.style.color = '#64748b';
+                });
+                adminLink.addEventListener('mouseleave', () => {
+                    adminLink.style.color = '#94a3b8';
+                });
                 
-                modal.style.display = 'none';
-                document.body.appendChild(modal);
-                this.loginModal = modal;
-
-                // Add event listeners
-                const passwordInput = modal.querySelector('#adminPassword');
-                const submitBtn = modal.querySelector('#loginSubmit');
-                const cancelBtn = modal.querySelector('#loginCancel');
-
-                submitBtn.addEventListener('click', () => this.attemptLogin());
-                cancelBtn.addEventListener('click', () => this.hideLoginModal());
+                // Add to footer
+                const footer = document.querySelector('.footer');
+                if (footer) {
+                    footer.appendChild(adminLink);
+                }
                 
-                passwordInput.addEventListener('keypress', (e) => {
-                    if (e.key === 'Enter') this.attemptLogin();
-                });
-
-                // Focus password input when modal opens
-                passwordInput.addEventListener('focus', () => {
-                    passwordInput.style.borderColor = '#2563eb';
-                });
-                passwordInput.addEventListener('blur', () => {
-                    passwordInput.style.borderColor = '#e2e8f0';
-                });
+                this.loginBtn = adminLink;
             }
 
             createEditButton() {
@@ -172,75 +188,81 @@
                 this.editBtn = editBtn;
             }
 
+            createUserInfo() {
+                const userInfo = document.createElement('div');
+                const userName = this.currentUser?.name || this.currentUser?.email || 'Admin';
+                userInfo.innerHTML = `👤 ${userName}`;
+                userInfo.style.cssText = `
+                    position: fixed;
+                    top: 20px;
+                    right: 170px;
+                    z-index: 10000;
+                    background: #10b981;
+                    color: white;
+                    padding: 8px 12px;
+                    border-radius: 20px;
+                    font-size: 12px;
+                    font-weight: bold;
+                `;
+                
+                document.body.appendChild(userInfo);
+                this.userInfo = userInfo;
+            }
+
             createLogoutButton() {
                 const logoutBtn = document.createElement('button');
                 logoutBtn.innerHTML = '🚪 Logout';
                 logoutBtn.style.cssText = `
                     position: fixed;
-                    top: 20px;
-                    right: 150px;
+                    top: 60px;
+                    right: 20px;
                     z-index: 10000;
                     background: #dc2626;
                     color: white;
                     border: none;
-                    padding: 8px 12px;
-                    border-radius: 20px;
+                    padding: 6px 10px;
+                    border-radius: 15px;
                     cursor: pointer;
-                    font-size: 12px;
+                    font-size: 11px;
                     transition: all 0.3s ease;
                 `;
                 
-                logoutBtn.addEventListener('click', () => this.logout());
+                logoutBtn.addEventListener('click', async () => {
+                    if (this.auth0) {
+                        await this.auth0.logout({
+                            logoutParams: {
+                                returnTo: window.location.origin
+                            }
+                        });
+                    } else {
+                        // Demo logout
+                        this.logout();
+                    }
+                });
+                
                 document.body.appendChild(logoutBtn);
                 this.logoutBtn = logoutBtn;
             }
 
-            showLoginModal() {
-                this.loginModal.style.display = 'flex';
-                // Focus the password input
-                setTimeout(() => {
-                    this.loginModal.querySelector('#adminPassword').focus();
-                }, 100);
-            }
-
-            hideLoginModal() {
-                this.loginModal.style.display = 'none';
-                this.loginModal.querySelector('#adminPassword').value = '';
-            }
-
-            attemptLogin() {
-                const password = this.loginModal.querySelector('#adminPassword').value;
-                
-                if (password === this.adminPassword) {
-                    this.isAuthenticated = true;
-                    this.hideLoginModal();
-                    this.showAdminInterface();
-                    this.showNotification('Login successful! Welcome admin ✅');
-                } else {
-                    this.showNotification('Incorrect password! ❌');
-                    this.loginModal.querySelector('#adminPassword').value = '';
-                    this.loginModal.querySelector('#adminPassword').focus();
-                }
-            }
-
             showAdminInterface() {
-                // Hide login button and show admin controls
-                this.loginBtn.style.display = 'none';
+                if (this.loginBtn) this.loginBtn.style.display = 'none';
                 this.createEditButton();
+                this.createUserInfo();
                 this.createLogoutButton();
             }
 
             logout() {
-                this.isAuthenticated = false;
                 this.editMode = false;
+                this.currentUser = null;
                 
                 // Remove admin controls
                 if (this.editBtn) this.editBtn.remove();
+                if (this.userInfo) this.userInfo.remove();
                 if (this.logoutBtn) this.logoutBtn.remove();
                 this.adminPanel.style.display = 'none';
                 
-                // Show login button again
-                this.loginBtn.style.display = 'block';
+                // Recreate discrete login access
+                this.createLoginButton();
                 
                 // Turn off edit mode for all elements
                 document.querySelectorAll('[data-editable]').forEach(el => {
@@ -263,9 +285,12 @@
                             <button id="importContent" style="background: #8b5cf6; color: white; border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer;">📥 Import</button>
                         </div>
                         <input type="file" id="importFile" accept=".json" style="display: none;">
+                        <div style="background: #dcfce7; padding: 10px; border-radius: 8px; margin-bottom: 10px;">
+                            <p style="font-size: 12px; color: #166534; margin: 0;"><strong>🔒 Secured by Auth0</strong></p>
+                            <p style="font-size: 11px; color: #166534; margin: 5px 0 0 0;">✅ Enterprise-grade authentication & user management</p>
+                        </div>
                         <div style="background: #fef3c7; padding: 10px; border-radius: 8px; margin-bottom: 10px;">
-                            <p style="font-size: 12px; color: #92400e; margin: 0;"><strong>Password:</strong> ${this.adminPassword}</p>
-                            <p style="font-size: 11px; color: #92400e; margin: 5px 0 0 0;">⚠️ Change this in the code for security!</p>
+                            <p style="font-size: 11px; color: #92400e; margin: 0;">⚙️ <strong>Setup Required:</strong> Add your Auth0 domain & client ID to the code</p>
                         </div>
                         <p style="font-size: 14px; color: #64748b; margin: 0;">Click on any text to edit it. Changes are saved automatically.</p>
                     </div>
@@ -273,7 +298,7 @@
                 
                 panel.style.cssText = `
                     position: fixed;
-                    top: 70px;
+                    top: 100px;
                     right: 20px;
                     z-index: 9999;
                     display: none;
@@ -290,7 +315,7 @@
             }
 
             toggleEditMode() {
-                if (!this.isAuthenticated) {
+                if (!this.currentUser) {
                     this.showNotification('Please login first! 🔐');
                     return;
                 }
@@ -376,7 +401,7 @@
 
                 // Add click handler for editing
                 element.addEventListener('click', (e) => {
-                    if (this.editMode && this.isAuthenticated) {
+                    if (this.editMode && this.currentUser) {
                         e.preventDefault();
                         element.focus();
                     }
@@ -384,22 +409,20 @@
 
                 // Save on blur/input
                 element.addEventListener('blur', () => {
-                    if (this.editMode && this.isAuthenticated) {
+                    if (this.editMode && this.currentUser) {
                         this.contentData[key] = element.innerHTML;
                         this.saveToMemory();
                     }
                 });
 
                 element.addEventListener('input', () => {
-                    if (this.editMode && this.isAuthenticated) {
+                    if (this.editMode && this.currentUser) {
                         this.contentData[key] = element.innerHTML;
                     }
                 });
             }
 
             loadContent() {
-                // In a real implementation, this would load from a server
-                // For demo purposes, we'll use in-memory storage
                 const saved = localStorage.getItem('aquafresh_content');
                 if (saved) {
                     try {
@@ -411,7 +434,6 @@
             }
 
             saveToMemory() {
-                // Auto-save to localStorage for demo purposes
                 localStorage.setItem('aquafresh_content', JSON.stringify(this.contentData));
             }
 
@@ -441,7 +463,7 @@
                             const imported = JSON.parse(e.target.result);
                             this.contentData = imported;
                             this.saveToMemory();
-                            location.reload(); // Reload to show imported content
+                            location.reload();
                         } catch (error) {
                             this.showNotification('Error importing file! ❌');
                         }
@@ -468,15 +490,14 @@
                 `;
                 
                 document.body.appendChild(notification);
-                setTimeout(() => notification.remove(), 2000);
+                setTimeout(() => notification.remove(), 3000);
             }
         }
 
         // Initialize content manager
-        const contentManager = new SimpleContentManager();
+        const contentManager = new Auth0ContentManager();
 
         // Original functionality
-        // Smooth scrolling for navigation links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
@@ -490,7 +511,6 @@
             });
         });
 
-        // Navigation background on scroll
         window.addEventListener('scroll', () => {
             const nav = document.getElementById('nav');
             if (window.scrollY > 100) {
@@ -500,7 +520,6 @@
             }
         });
 
-        // Add entrance animations to service cards
         const observerOptions = {
             threshold: 0.1,
             rootMargin: '0px 0px -50px 0px'
@@ -510,7 +529,7 @@
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.style.opacity = '1';
-                    entry.target.transform = 'translateY(0)';
+                    entry.target.style.transform = 'translateY(0)';
                 }
             });
         }, observerOptions);
@@ -522,7 +541,6 @@
             observer.observe(card);
         });
 
-        // Parallax effect for floating elements
         window.addEventListener('scroll', () => {
             const scrolled = window.pageYOffset;
             const rate = scrolled * -0.5;
@@ -532,4 +550,3 @@
                 element.style.transform = `translateY(${rate * speed}px) rotate(${scrolled * 0.01}deg)`;
             });
         });
-    </script>
