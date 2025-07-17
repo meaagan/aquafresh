@@ -16,7 +16,7 @@ function App() {
   const auth = useAuth();
   const content = useContent();
   
-  const secretKey = 'cms-admin-2024'; // Change this to your secret key
+  const secretKey = 'admin-2025'; // Change this to your secret key
 
   // Check for admin route access
   useEffect(() => {

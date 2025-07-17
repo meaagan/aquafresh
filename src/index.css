@@ -50,7 +50,6 @@ body {
   background: rgba(248, 250, 252, 0.95);
   backdrop-filter: blur(20px);
   z-index: 1000;
-  padding: 1rem 0;
   transition: all 0.3s ease;
 }
 
@@ -68,55 +67,28 @@ body {
   padding: 0 2rem;
 }
 
-.logo-container {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
+.aquafresh-logo {
   cursor: pointer;
   transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
 }
 
-.logo-container:hover {
+.aquafresh-logo:hover {
   transform: translateY(-2px);
 }
 
-.logo-icon {
-  width: 45px;
-  height: 45px;
-  background: linear-gradient(135deg, #409cff, #64c8ff);
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 4px 15px rgba(64, 156, 255, 0.3);
+.logo-img {
+  height: 70px;
+  width: auto;
+  transition: all 0.3s ease;
+  /* Simple color transformation to match website theme */
+  filter: hue-rotate(200deg);
 }
 
-.logo-water-icon {
-  font-size: 1.5rem;
-  color: white;
-}
-
-.logo-text {
-  display: flex;
-  flex-direction: column;
-  line-height: 1.1;
-}
-
-.logo-main {
-  font-size: 1.5rem;
-  font-weight: 700;
-  background: linear-gradient(135deg, #409cff, #64c8ff);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.logo-sub {
-  font-size: 0.75rem;
-  color: #64748b;
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+.aquafresh-logo:hover .logo-img {
+  filter: hue-rotate(200deg);
+  transform: scale(1.02);
 }
 
 .nav-links {
@@ -156,11 +128,12 @@ body {
 /* Hero Section */
 .hero {
   min-height: 100vh;
+  min-height: 100dvh; /* Use dynamic viewport height for better mobile support */
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
-  padding: 2rem;
+  padding: 6rem 2rem 2rem; /* Add top padding to account for fixed nav */
 }
 
 .hero-container {
@@ -214,6 +187,12 @@ body {
   background: rgba(37, 99, 235, 0.1);
   padding: 0.75rem;
   border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  flex-shrink: 0;
 }
 
 .feature-item h4 {
@@ -282,7 +261,15 @@ body {
 .contact-cta {
   display: flex;
   justify-content: center;
-  margin-top: 3rem;
+  margin-top: 2rem;
+}
+
+.btn-text-mobile {
+  display: none; /* Hidden on desktop */
+}
+
+.btn-text-desktop {
+  display: inline; /* Shown on desktop */
 }
 
 .hero-visual {
@@ -328,11 +315,24 @@ body {
   font-weight: 500;
 }
 
-.service-areas-preview h4 {
+.service-areas-preview h4,
+.hero-call-now h4 {
   font-size: 1.1rem;
   font-weight: 600;
   color: #1e293b;
   margin-bottom: 1rem;
+}
+
+.hero-call-now {
+  text-align: center;
+}
+
+.hero-cta-btn {
+  width: 100%;
+  max-width: none;
+  font-size: 1rem;
+  padding: 1rem 1.5rem;
+  margin-top: 0.5rem;
 }
 
 .area-tags {
@@ -403,19 +403,30 @@ body {
 
 /* Sections */
 .section {
-  padding: 6rem 2rem;
+  padding: 4rem 2rem;
   max-width: 1200px;
   margin: 0 auto;
 }
 
 .section-alt {
-  padding: 6rem 2rem;
+  padding: 4rem 2rem;
   background: rgba(255, 255, 255, 0.3);
+}
+
+/* Contact section specific styling for better fit */
+#contact {
+  padding: 3rem 2rem 2rem;
+  min-height: auto;
 }
 
 .section-header {
   text-align: center;
-  margin-bottom: 4rem;
+  margin-bottom: 3rem;
+}
+
+/* Contact section header - more compact */
+#contact .section-header {
+  margin-bottom: 2rem;
 }
 
 .section-header h2 {
@@ -576,8 +587,8 @@ body {
 .contact-info {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 2rem;
-  margin-top: 3rem;
+  gap: 1.5rem;
+  margin-top: 1.5rem;
   max-width: 800px;
   margin-left: auto;
   margin-right: auto;
@@ -585,8 +596,8 @@ body {
 
 .contact-item {
   background: rgba(255, 255, 255, 0.9);
-  padding: 2.5rem;
-  border-radius: 20px;
+  padding: 2rem;
+  border-radius: 15px;
   border: 1px solid rgba(100, 200, 255, 0.3);
   transition: all 0.3s ease;
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
@@ -851,45 +862,37 @@ body {
     display: none;
   }
   
-  .logo-container {
-    gap: 0.5rem;
-  }
-  
-  .logo-icon {
-    width: 40px;
-    height: 40px;
-  }
-  
-  .logo-water-icon {
-    font-size: 1.3rem;
-  }
-  
-  .logo-main {
-    font-size: 1.3rem;
-  }
-  
-  .logo-sub {
-    font-size: 0.7rem;
+  .logo-img {
+    height: 48px;
+    filter: hue-rotate(200deg);
   }
   
   .hero {
-    padding: 1rem;
+    padding: 5rem 1rem 2rem; /* Better top padding for mobile nav */
+    min-height: 100vh; /* Fallback for older browsers */
+    min-height: 100dvh; /* Use dynamic viewport height */
   }
   
   .hero-container {
     grid-template-columns: 1fr;
-    gap: 2rem;
+    gap: 1.5rem; /* Reduce gap for mobile */
     text-align: center;
   }
   
   .hero-features {
     flex-direction: column;
     gap: 1rem;
+    margin-bottom: 1.5rem; /* Reduce bottom margin on mobile */
   }
   
   .hero-cta {
     flex-direction: column;
-    gap: 1.5rem;
+    gap: 1rem; /* Reduce gap for better mobile fit */
+  }
+  
+  .hero p {
+    font-size: 1rem; /* Slightly smaller text on mobile */
+    margin-bottom: 1.5rem; /* Reduce margin for mobile */
   }
   
   .phone-section {
@@ -906,6 +909,23 @@ body {
   .btn {
     width: 100%;
     max-width: 280px;
+    font-size: 1rem; /* Smaller font on mobile */
+    padding: 0.9rem 2rem; /* Adjust padding for mobile */
+  }
+  
+  .contact-cta .btn {
+    font-size: 0.95rem; /* Even smaller for contact CTA */
+    padding: 1rem 1.5rem;
+    line-height: 1.2; /* Better line spacing */
+    min-height: auto;
+  }
+  
+  .btn-text-mobile {
+    display: inline; /* Show mobile text on mobile */
+  }
+  
+  .btn-text-desktop {
+    display: none; /* Hide desktop text on mobile */
   }
   
   .hero h1 {
@@ -919,6 +939,11 @@ body {
   .service-stats {
     grid-template-columns: 1fr;
     gap: 1rem;
+  }
+  
+  .hero-cta-btn {
+    font-size: 0.9rem;
+    padding: 0.9rem 1.2rem;
   }
   
   .area-tags {
@@ -939,11 +964,11 @@ body {
   
   .contact-info {
     grid-template-columns: 1fr;
-    gap: 1.5rem;
+    gap: 1rem;
   }
   
   .contact-item {
-    padding: 2rem;
+    padding: 1.5rem;
   }
   
   .service-areas {
@@ -957,17 +982,66 @@ body {
   }
   
   .section {
-    padding: 4rem 1rem;
+    padding: 3rem 1rem;
   }
   
   .section-alt {
-    padding: 4rem 1rem;
+    padding: 3rem 1rem;
+  }
+  
+  #contact {
+    padding: 2rem 1rem 1.5rem;
   }
 }
 
 @media (max-width: 480px) {
+  .hero {
+    padding: 4rem 0.75rem 1.5rem; /* Tighter padding for small screens */
+  }
+  
   .hero h1 {
     font-size: 2rem;
+    margin-bottom: 1rem; /* Reduce margin */
+  }
+  
+  .hero p {
+    font-size: 0.95rem;
+    margin-bottom: 1rem;
+  }
+  
+  .hero-features {
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+  }
+  
+  .feature-item {
+    flex-direction: column;
+    text-align: center;
+    gap: 0.5rem;
+  }
+  
+  .feature-item h4 {
+    font-size: 0.9rem;
+  }
+  
+  .feature-item p {
+    font-size: 0.8rem;
+  }
+  
+  .feature-icon {
+    font-size: 1.2rem;
+    width: 1.2rem;
+    height: 1.2rem;
+    padding: 0.6rem;
+  }
+  
+  .phone-section {
+    padding: 0.75rem 1rem;
+  }
+  
+  .hero-cta-btn {
+    font-size: 0.85rem;
+    padding: 0.8rem 1rem;
   }
   
   .section-header h2 {
@@ -986,5 +1060,15 @@ body {
   
   .nav-content {
     padding: 0 1rem;
+  }
+  
+  .contact-cta .btn {
+    font-size: 0.85rem; /* Smaller text for very small screens */
+    padding: 0.8rem 1rem;
+    max-width: 100%; /* Allow full width on very small screens */
+  }
+  
+  .btn-text-mobile {
+    display: inline; /* Ensure mobile text shows on very small screens */
   }
 } 

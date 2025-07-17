@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { FaHome, FaSwimmer, FaHardHat, FaPhone, FaClock, FaShieldAlt, FaTruck, FaTint, FaWater } from 'react-icons/fa';
 import EditableElement from './EditableElement';
 import EditModeIndicator from './EditModeIndicator';
+import AquaFreshLogo from './AquaFreshLogo';
 
 function LandingPage({ content, auth, isAdminRoute }) {
   const [navScrolled, setNavScrolled] = useState(false);
@@ -102,15 +103,10 @@ function LandingPage({ content, auth, isAdminRoute }) {
       {/* Navigation */}
       <nav className="nav" id="nav" role="navigation" aria-label="Main navigation">
         <div className="nav-content">
-          <div className="logo-container" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-            <div className="logo-icon">
-              <FaWater className="logo-water-icon" />
-            </div>
-            <div className="logo-text">
-              <span className="logo-main">AquaFresh</span>
-              <span className="logo-sub">Potable Water</span>
-            </div>
-          </div>
+          <AquaFreshLogo 
+            className="logo-container" 
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          />
           <ul className="nav-links">
             <li><a href="#home" onClick={(e) => handleNavClick(e, '#home')} aria-label="Go to homepage">Home</a></li>
             <li><a href="#services" onClick={(e) => handleNavClick(e, '#services')} aria-label="View our services">Services</a></li>
@@ -140,31 +136,7 @@ function LandingPage({ content, auth, isAdminRoute }) {
               onUpdate={content.updateContent}
             />
             
-            <div className="hero-features">
-              <div className="feature-item">
-                <FaClock className="feature-icon" />
-                <div>
-                  <h4>24/7 Service</h4>
-                  <p>Available when you need us</p>
-                </div>
-              </div>
-              <div className="feature-item">
-                <FaTruck className="feature-icon" />
-                <div>
-                  <h4>Fast Delivery</h4>
-                  <p>Quick and reliable service</p>
-                </div>
-              </div>
-            </div>
-            
             <div className="hero-cta">
-              <div className="phone-section">
-                <FaPhone className="phone-icon" />
-                <div>
-                  <span className="phone-label">Call Now</span>
-                  <a href="tel:7809148384" className="phone-number">780-914-8384</a>
-                </div>
-              </div>
               <div className="cta-buttons">
                 <a href="tel:7809148384" className="btn btn-primary" aria-label="Call now for water delivery">
                   Get Quote Now
@@ -192,16 +164,12 @@ function LandingPage({ content, auth, isAdminRoute }) {
                   <div className="stat-label">Owned & Operated</div>
                 </div>
               </div>
-              <div className="service-areas-preview">
-                <h4>Service Areas</h4>
-                <div className="area-tags">
-                  <span className="area-tag">Parkland County</span>
-                  <span className="area-tag">Stony Plain</span>
-                  <span className="area-tag">Spruce Grove</span>
-                  <span className="area-tag">West Edmonton</span>
-                  <span className="area-tag">Leduc County</span>
-                  <span className="area-tag">+ 3 more</span>
-                </div>
+              <div className="hero-call-now">
+                <h4>Ready to Get Started?</h4>
+                <a href="tel:7809148384" className="btn btn-primary hero-cta-btn" aria-label="Call now for immediate water delivery service">
+                  <span className="btn-text-mobile">Call: 780-914-8384</span>
+                  <span className="btn-text-desktop">Call Now: 780-914-8384</span>
+                </a>
               </div>
             </div>
           </div>
@@ -411,7 +379,8 @@ function LandingPage({ content, auth, isAdminRoute }) {
           
           <div className="contact-cta">
             <a href="tel:7809148384" className="btn btn-primary" aria-label="Call now for immediate water delivery service">
-              Call Now: 780-914-8384
+              <span className="btn-text-mobile">Call: 780-914-8384</span>
+              <span className="btn-text-desktop">Call Now: 780-914-8384</span>
             </a>
           </div>
         </div>
