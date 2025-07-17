@@ -70,6 +70,8 @@ Access the admin panel using any of these methods:
 2. **URL Parameter**: `yoursite.com?admin=your-custom-secret-key-2024`
 3. **Direct Route**: `yoursite.com/admin` (after initial setup)
 
+**Note**: The admin secret key is now configured via the `VITE_ADMIN_SECRET_KEY` environment variable for enhanced security.
+
 ## 🌐 Deployment on Netlify
 
 1. **Build the Project**
@@ -212,3 +214,34 @@ For issues or questions:
 ---
 
 **Built with ❤️ for AquaFresh Potable Water Services** 
+## 🔐 Environment Variables
+
+### Firebase Configuration
+This project uses environment variables to securely store Firebase configuration. 
+
+1. **Copy the example file**:
+   ```bash
+   cp .env.example .env
+   ```
+
+2. **Fill in your Firebase values** in the `.env` file:
+   ```env
+   # Firebase Configuration
+   VITE_FIREBASE_API_KEY=your_firebase_api_key_here
+   VITE_FIREBASE_AUTH_DOMAIN=your_project.firebaseapp.com
+   VITE_FIREBASE_PROJECT_ID=your_project_id
+   VITE_FIREBASE_STORAGE_BUCKET=your_project.firebasestorage.app
+   VITE_FIREBASE_MESSAGING_SENDER_ID=your_messaging_sender_id
+   VITE_FIREBASE_APP_ID=your_app_id_here
+   
+   # Admin Configuration
+   VITE_ADMIN_SECRET_KEY=your_custom_admin_secret_key_2024
+   ```
+
+3. **Never commit** the `.env` file to version control (it's already in `.gitignore`)
+
+### Environment Variable Details
+- **Firebase vars**: Required for Firebase authentication and database functionality
+- **Admin Secret Key**: Used for secure admin panel access via URL hash or parameter
+- **VITE_ Prefix**: All environment variables for Vite must be prefixed with `VITE_` to be accessible in the frontend code
+

@@ -16,7 +16,7 @@ function App() {
   const auth = useAuth();
   const content = useContent();
   
-  const secretKey = 'admin-2025'; // Change this to your secret key
+  const secretKey = import.meta.env.VITE_ADMIN_SECRET_KEY || 'admin-2025-fallback';
 
   // Check for admin route access
   useEffect(() => {
