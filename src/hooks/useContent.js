@@ -27,7 +27,20 @@ const defaultContent = {
   contact2Title: 'Service Area',
   contact2Content: 'Alberta coverage<br><strong>Multiple Counties</strong>',
   contact3Title: 'Join Our Team',
-  contact3Content: 'We\'re always looking for experienced drivers to join our team<br><strong><a href="tel:7809148384">Call or text Dez at 780-914-8384</a></strong>'
+  contact3Content: 'We\'re always looking for experienced drivers to join our team<br><strong><a href="tel:7809148384">Call or text Dez at 780-914-8384</a></strong>',
+  // Button Text
+  primaryButtonText: 'Get Quote Now',
+  secondaryButtonText: 'Our Services',
+  callButtonMobile: 'Call: 780-914-8384',
+  callButtonDesktop: 'Call Now: 780-914-8384',
+  ctaTitle: 'Ready to Get Started?',
+  // Stats Section
+  stat1Number: '1998',
+  stat1Label: 'Year Established',
+  stat2Number: '6',
+  stat2Label: 'Counties Served',
+  stat3Number: 'Family',
+  stat3Label: 'Owned & Operated'
 };
 
 export function useContent() {

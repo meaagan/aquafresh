@@ -17,15 +17,6 @@ function AdminPanel({ content, auth, onBackToSite }) {
     setIsLoading(false);
   };
 
-  const handleCreateAccount = async (e) => {
-    e.preventDefault();
-    if (!email || !password) return;
-    
-    setIsLoading(true);
-    await auth.createAccount(email, password);
-    setIsLoading(false);
-  };
-
   const handleLogout = async () => {
     await auth.logout();
     setEmail('');
@@ -121,14 +112,6 @@ function AdminPanel({ content, auth, onBackToSite }) {
                     disabled={isLoading || !email || !password}
                   >
                     {isLoading ? 'Logging in...' : 'Login'}
-                  </button>
-                  <button 
-                    type="button" 
-                    className="admin-btn secondary"
-                    onClick={handleCreateAccount}
-                    disabled={isLoading || !email || !password}
-                  >
-                    {isLoading ? 'Creating...' : 'Create Account'}
                   </button>
                   <button 
                     type="button" 

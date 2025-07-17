@@ -139,10 +139,22 @@ function LandingPage({ content, auth, isAdminRoute }) {
             <div className="hero-cta">
               <div className="cta-buttons">
                 <a href="tel:7809148384" className="btn btn-primary" aria-label="Call now for water delivery">
-                  Get Quote Now
+                  <EditableElement
+                    tag="span"
+                    contentKey="primaryButtonText"
+                    content={content.content}
+                    editMode={content.editMode}
+                    onUpdate={content.updateContent}
+                  />
                 </a>
                 <a href="#services" onClick={(e) => handleNavClick(e, '#services')} className="btn btn-secondary" aria-label="Learn about our water hauling services">
-                  Our Services
+                  <EditableElement
+                    tag="span"
+                    contentKey="secondaryButtonText"
+                    content={content.content}
+                    editMode={content.editMode}
+                    onUpdate={content.updateContent}
+                  />
                 </a>
               </div>
             </div>
@@ -152,23 +164,87 @@ function LandingPage({ content, auth, isAdminRoute }) {
             <div className="visual-card">
               <div className="service-stats">
                 <div className="stat-item">
-                  <div className="stat-number">1998</div>
-                  <div className="stat-label">Year Established</div>
+                  <EditableElement
+                    tag="div"
+                    className="stat-number"
+                    contentKey="stat1Number"
+                    content={content.content}
+                    editMode={content.editMode}
+                    onUpdate={content.updateContent}
+                  />
+                  <EditableElement
+                    tag="div"
+                    className="stat-label"
+                    contentKey="stat1Label"
+                    content={content.content}
+                    editMode={content.editMode}
+                    onUpdate={content.updateContent}
+                  />
                 </div>
                 <div className="stat-item">
-                  <div className="stat-number">6</div>
-                  <div className="stat-label">Counties Served</div>
+                  <EditableElement
+                    tag="div"
+                    className="stat-number"
+                    contentKey="stat2Number"
+                    content={content.content}
+                    editMode={content.editMode}
+                    onUpdate={content.updateContent}
+                  />
+                  <EditableElement
+                    tag="div"
+                    className="stat-label"
+                    contentKey="stat2Label"
+                    content={content.content}
+                    editMode={content.editMode}
+                    onUpdate={content.updateContent}
+                  />
                 </div>
                 <div className="stat-item">
-                  <div className="stat-number">Family</div>
-                  <div className="stat-label">Owned & Operated</div>
+                  <EditableElement
+                    tag="div"
+                    className="stat-number"
+                    contentKey="stat3Number"
+                    content={content.content}
+                    editMode={content.editMode}
+                    onUpdate={content.updateContent}
+                  />
+                  <EditableElement
+                    tag="div"
+                    className="stat-label"
+                    contentKey="stat3Label"
+                    content={content.content}
+                    editMode={content.editMode}
+                    onUpdate={content.updateContent}
+                  />
                 </div>
               </div>
               <div className="hero-call-now">
-                <h4>Ready to Get Started?</h4>
+                <EditableElement
+                  tag="h4"
+                  contentKey="ctaTitle"
+                  content={content.content}
+                  editMode={content.editMode}
+                  onUpdate={content.updateContent}
+                />
                 <a href="tel:7809148384" className="btn btn-primary hero-cta-btn" aria-label="Call now for immediate water delivery service">
-                  <span className="btn-text-mobile">Call: 780-914-8384</span>
-                  <span className="btn-text-desktop">Call Now: 780-914-8384</span>
+                  <span className="btn-text-mobile">
+                    <EditableElement
+                      tag="span"
+                      contentKey="callButtonMobile"
+                      content={content.content}
+                      editMode={content.editMode}
+                      onUpdate={content.updateContent}
+                    />
+                  </span>
+                  <span className="btn-text-desktop">
+                    <EditableElement
+                      tag="span"
+                      contentKey="callButtonDesktop"
+                      content={content.content}
+                      editMode={content.editMode}
+                      onUpdate={content.updateContent}
+                    />
+                  </span>
                 </a>
               </div>
             </div>
@@ -379,8 +455,24 @@ function LandingPage({ content, auth, isAdminRoute }) {
           
           <div className="contact-cta">
             <a href="tel:7809148384" className="btn btn-primary" aria-label="Call now for immediate water delivery service">
-              <span className="btn-text-mobile">Call: 780-914-8384</span>
-              <span className="btn-text-desktop">Call Now: 780-914-8384</span>
+              <span className="btn-text-mobile">
+                <EditableElement
+                  tag="span"
+                  contentKey="callButtonMobile"
+                  content={content.content}
+                  editMode={content.editMode}
+                  onUpdate={content.updateContent}
+                />
+              </span>
+              <span className="btn-text-desktop">
+                <EditableElement
+                  tag="span"
+                  contentKey="callButtonDesktop"
+                  content={content.content}
+                  editMode={content.editMode}
+                  onUpdate={content.updateContent}
+                />
+              </span>
             </a>
           </div>
         </div>

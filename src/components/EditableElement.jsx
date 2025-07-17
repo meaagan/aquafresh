@@ -22,6 +22,13 @@ function EditableElement({
   const handleClick = () => {
     if (editMode && !isEditing) {
       setIsEditing(true);
+      // Set the innerHTML after making it editable
+      setTimeout(() => {
+        if (elementRef.current) {
+          elementRef.current.innerHTML = localContent;
+          elementRef.current.focus();
+        }
+      }, 0);
       toast.success(`Editing: ${contentKey.replace(/([A-Z])/g, ' $1').toLowerCase()}`);
     }
   };
@@ -76,10 +83,12 @@ function EditableElement({
     <Tag
       className={combinedClassName}
       onClick={handleClick}
-      dangerouslySetInnerHTML={{ __html: localContent }}
       {...editableProps}
       {...props}
-    />
+      {...(!isEditing ? { dangerouslySetInnerHTML: { __html: localContent } } : {})}
+    >
+      {isEditing ? '' : null}
+    </Tag>
   );
 }
 

@@ -32,13 +32,25 @@ function App() {
     const urlParams = new URLSearchParams(window.location.search);
     const adminParam = urlParams.get('admin');
     
+    // Debug logging for production troubleshooting
+    console.log('🔍 Admin Route Check:', {
+      urlHash,
+      adminParam,
+      secretKey,
+      currentPath: location.pathname,
+      hashMatch: urlHash === secretKey,
+      paramMatch: adminParam === secretKey
+    });
+    
     if (urlHash === secretKey || adminParam === secretKey) {
+      console.log('✅ Admin access granted, navigating to /admin');
       setIsAdminRoute(true);
       navigate('/admin', { replace: true });
       
       // Clean up URL to remove secret key (for security)
       window.history.replaceState({}, document.title, window.location.pathname);
     } else if (location.pathname === '/admin') {
+      console.log('✅ Direct admin route access');
       setIsAdminRoute(true);
     } else {
       setIsAdminRoute(false);
