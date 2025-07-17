@@ -58,7 +58,7 @@ export function useContent() {
         const firebaseContent = docSnap.data();
         console.log('✅ Firebase content loaded:', Object.keys(firebaseContent));
         setContent({ ...defaultContent, ...firebaseContent });
-        toast.success('Content loaded from Firebase!');
+        // Content loads silently for regular users
       } else {
         console.log('⚠️ No content document found in Firebase, using defaults');
         console.log('🔧 Creating initial document with default content...');
@@ -66,7 +66,7 @@ export function useContent() {
         // Try to create the document with default content
         await setDoc(docRef, defaultContent);
         console.log('✅ Default content saved to Firebase');
-        toast.success('Default content created in Firebase!');
+        // Default content creation is silent for users
       }
     } catch (error) {
       console.error('❌ Error loading content from Firebase:', error);
@@ -76,7 +76,8 @@ export function useContent() {
         stack: error.stack
       });
       setError(error.message);
-      toast.error(`Firebase Error: ${error.message}`);
+      // Firebase errors are logged but not shown to regular users
+      // Admin panel will show errors if needed
       // Fallback to default content
       setContent(defaultContent);
     } finally {
