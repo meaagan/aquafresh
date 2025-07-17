@@ -44,28 +44,44 @@ export function useContent() {
 
   const loadContent = async () => {
     try {
+      console.log('🔄 Starting Firebase content load...');
       setLoading(true);
       setError(null);
       
       const docRef = doc(db, 'cms', 'content');
+      console.log('📄 Document reference created:', docRef.path);
+      
       const docSnap = await getDoc(docRef);
+      console.log('📥 Document snapshot received:', { exists: docSnap.exists() });
       
       if (docSnap.exists()) {
         const firebaseContent = docSnap.data();
+        console.log('✅ Firebase content loaded:', Object.keys(firebaseContent));
         setContent({ ...defaultContent, ...firebaseContent });
-        console.log('Content loaded from Firebase');
+        toast.success('Content loaded from Firebase!');
       } else {
-        console.log('No content found in Firebase, using defaults');
+        console.log('⚠️ No content document found in Firebase, using defaults');
+        console.log('🔧 Creating initial document with default content...');
         setContent(defaultContent);
+        // Try to create the document with default content
+        await setDoc(docRef, defaultContent);
+        console.log('✅ Default content saved to Firebase');
+        toast.success('Default content created in Firebase!');
       }
     } catch (error) {
-      console.error('Error loading content from Firebase:', error);
+      console.error('❌ Error loading content from Firebase:', error);
+      console.error('Error details:', {
+        code: error.code,
+        message: error.message,
+        stack: error.stack
+      });
       setError(error.message);
-      toast.error('Could not load content from Firebase');
+      toast.error(`Firebase Error: ${error.message}`);
       // Fallback to default content
       setContent(defaultContent);
     } finally {
       setLoading(false);
+      console.log('🏁 Firebase content load completed');
     }
   };
 

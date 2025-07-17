@@ -33,9 +33,13 @@ function AdminPanel({ content, auth, onBackToSite }) {
   };
 
   const handleToggleEditMode = () => {
-    content.toggleEditMode();
-    if (content.editMode) {
-      onBackToSite();
+    // If currently NOT in edit mode, enable it and go to site for editing
+    if (!content.editMode) {
+      content.toggleEditMode();
+      onBackToSite(); // Go to site to edit content
+    } else {
+      // If currently in edit mode, disable it and stay in admin
+      content.toggleEditMode();
     }
   };
 

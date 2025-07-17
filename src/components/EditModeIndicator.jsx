@@ -6,13 +6,13 @@ function EditModeIndicator({ onExit, onAdmin }) {
       <div className="edit-mode-indicator-content">
         <span className="edit-mode-text">EDIT MODE ACTIVE</span>
         <button 
-          onClick={onToggleEditMode}
+          onClick={onExit}
           className="edit-mode-btn"
         >
           Exit
         </button>
         <button 
-          onClick={onReturnToAdmin}
+          onClick={onAdmin}
           className="edit-mode-btn"
         >
           Admin

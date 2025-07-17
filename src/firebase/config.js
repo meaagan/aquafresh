@@ -44,6 +44,16 @@ const firebaseConfig = {
   appId: import.meta.env.VITE_FIREBASE_APP_ID
 };
 
+// Debug: Log environment variables to help troubleshoot
+console.log('🔧 Firebase Environment Debug:', {
+  hasApiKey: !!import.meta.env.VITE_FIREBASE_API_KEY,
+  hasAuthDomain: !!import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  hasProjectId: !!import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  apiKeyPrefix: import.meta.env.VITE_FIREBASE_API_KEY?.substring(0, 10) + '...',
+  configComplete: Object.values(firebaseConfig).every(val => val !== undefined)
+});
+
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
