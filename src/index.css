@@ -170,7 +170,7 @@ body {
 }
 
 .nav-links a:hover {
-  color: #2563eb;
+  color: #409cff;
   transform: translateY(-2px);
 }
 
@@ -192,12 +192,12 @@ body {
 /* Hero Section */
 .hero {
   min-height: 100vh;
-  min-height: 100dvh; /* Use dynamic viewport height for better mobile support */
+  min-height: 100dvh; /* Use dynamic viewport height for better desktop support */
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
-  padding: 6rem 2rem 2rem; /* Add top padding to account for fixed nav */
+  padding: 6rem 2rem 2rem; /* Standard padding for desktop */
   overflow: hidden;
 }
 
@@ -233,14 +233,16 @@ body {
 }
 
 .hero-container {
-  max-width: 1200px;
   width: 100%;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 4rem;
+  gap: 5rem; /* More breathing room on desktop */
   align-items: center;
   position: relative;
   z-index: 1;
+  max-width: 1300px; /* Optimal width for readability */
+  margin: 0 auto;
+  padding: 0 2rem; /* Better edge spacing */
 }
 
 .hero-container::before {
@@ -268,6 +270,8 @@ body {
   animation: bubbleFloat 25s ease-in-out infinite reverse;
   z-index: -1;
 }
+
+
 
 .hero-content {
   animation: fadeInUp 1s ease-out;
@@ -310,26 +314,72 @@ body {
   display: flex;
   gap: 2rem;
   margin-bottom: 2rem;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 .feature-item {
   display: flex;
   align-items: center;
   gap: 1rem;
+  padding: 1rem 1.5rem;
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 15px;
+  border: 1px solid rgba(64, 156, 255, 0.2);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  animation: fadeInUp 1s ease-out;
+  animation-delay: 0.3s;
+  animation-fill-mode: both;
+  cursor: pointer;
+}
+
+.feature-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(64, 156, 255, 0.1), transparent);
+  transition: left 0.5s ease;
+}
+
+.feature-item:hover::before {
+  left: 100%;
+}
+
+.feature-item:hover {
+  transform: translateY(-3px);
+  background: rgba(255, 255, 255, 0.9);
+  border-color: rgba(64, 156, 255, 0.4);
+  box-shadow: 0 8px 25px rgba(64, 156, 255, 0.2);
 }
 
 .feature-icon {
   font-size: 1.5rem;
-  color: #2563eb;
-  background: rgba(37, 99, 235, 0.1);
+  color: white;
+  background: linear-gradient(135deg, #409cff, #64c8ff);
   padding: 0.75rem;
   border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 1.5rem;
-  height: 1.5rem;
+  width: 3rem;
+  height: 3rem;
   flex-shrink: 0;
+  box-shadow: 0 4px 15px rgba(64, 156, 255, 0.3);
+  transition: transform 0.3s ease;
+}
+
+.feature-item:hover .feature-icon {
+  transform: scale(1.1) rotate(5deg);
+}
+
+.feature-content {
+  display: flex;
+  flex-direction: column;
 }
 
 .feature-item h4 {
@@ -343,6 +393,61 @@ body {
   font-size: 0.9rem;
   color: #64748b;
   margin: 0;
+}
+
+/* Trust Badges */
+.trust-badges {
+  display: flex;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  animation: fadeInUp 1s ease-out;
+  animation-delay: 0.6s;
+  animation-fill-mode: both;
+}
+
+.trust-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1.25rem;
+  background: linear-gradient(135deg, rgba(64, 156, 255, 0.1), rgba(100, 200, 255, 0.05));
+  border: 1px solid rgba(64, 156, 255, 0.3);
+  border-radius: 25px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #409cff;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.trust-badge::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #409cff, #64c8ff);
+}
+
+.trust-badge:hover {
+  transform: translateY(-2px);
+  background: linear-gradient(135deg, rgba(64, 156, 255, 0.15), rgba(100, 200, 255, 0.08));
+  border-color: rgba(64, 156, 255, 0.5);
+  box-shadow: 0 6px 20px rgba(64, 156, 255, 0.2);
+}
+
+.trust-icon {
+  font-size: 1.1rem;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
 }
 
 .hero-cta {
@@ -365,7 +470,7 @@ body {
 
 .phone-icon {
   font-size: 1.5rem;
-  color: #2563eb;
+  color: #409cff;
   background: rgba(37, 99, 235, 0.1);
   padding: 0.75rem;
   border-radius: 12px;
@@ -386,7 +491,7 @@ body {
 }
 
 .phone-number:hover {
-  color: #2563eb;
+  color: #409cff;
 }
 
 .cta-buttons {
@@ -444,9 +549,34 @@ body {
 }
 
 .visual-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.2);
-  border-color: rgba(37, 99, 235, 0.4);
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 35px 70px rgba(0, 0, 0, 0.25);
+  border-color: rgba(64, 156, 255, 0.6);
+}
+
+.visual-card::after {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(45deg, #a8d4ff, #c4e3ff, #a8d4ff, #c4e3ff);
+  background-size: 400% 400%;
+  border-radius: 22px;
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  animation: gradientShift 3s ease-in-out infinite;
+}
+
+.visual-card:hover::after {
+  opacity: 0.7;
+}
+
+@keyframes gradientShift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
 }
 
 .service-stats {
@@ -465,8 +595,31 @@ body {
 .stat-number {
   font-size: 2rem;
   font-weight: 700;
-  color: #2563eb;
+  color: #409cff;
   margin-bottom: 0.5rem;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.stat-number::after {
+  content: '';
+  position: absolute;
+  bottom: -3px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #409cff, #64c8ff);
+  transition: width 0.3s ease;
+}
+
+.stat-item:hover .stat-number {
+  transform: scale(1.1);
+  color: #1d4ed8;
+}
+
+.stat-item:hover .stat-number::after {
+  width: 100%;
 }
 
 .stat-label {
@@ -503,7 +656,7 @@ body {
 
 .area-tag {
   background: rgba(37, 99, 235, 0.1);
-  color: #2563eb;
+  color: #409cff;
   padding: 0.4rem 0.8rem;
   border-radius: 20px;
   font-size: 0.8rem;
@@ -512,40 +665,74 @@ body {
 }
 
 .btn {
-  padding: 1rem 2.5rem;
+  padding: 1.1rem 2.75rem; /* Slightly more generous padding */
   border: none;
   border-radius: 50px;
   font-size: 1.1rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); /* Smoother easing */
   text-decoration: none;
   display: inline-block;
   position: relative;
   overflow: hidden;
+  min-height: 54px; /* Consistent minimum height */
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .btn-primary {
   background: linear-gradient(135deg, #409cff, #64c8ff);
   color: white;
   box-shadow: 0 10px 30px rgba(64, 156, 255, 0.3);
+  position: relative;
+  overflow: hidden;
+  animation: buttonBreathe 3s ease-in-out infinite;
+}
+
+.btn-primary::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s ease;
+}
+
+.btn-primary:hover::before {
+  left: 100%;
+}
+
+@keyframes buttonBreathe {
+  0%, 100% { 
+    transform: scale(1);
+    box-shadow: 0 10px 30px rgba(64, 156, 255, 0.3);
+  }
+  50% { 
+    transform: scale(1.02);
+    box-shadow: 0 15px 40px rgba(64, 156, 255, 0.4);
+  }
 }
 
 .btn-primary:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 15px 40px rgba(64, 156, 255, 0.4);
+  transform: translateY(-4px); /* Slightly more lift */
+  box-shadow: 0 18px 45px rgba(64, 156, 255, 0.45); /* Enhanced shadow */
 }
 
 .btn-secondary {
   background: transparent;
-  color: #2563eb;
-  border: 2px solid #2563eb;
+  color: #409cff;
+  border: 2px solid #409cff;
 }
 
 .btn-secondary:hover {
-  background: #2563eb;
+  background: #409cff;
   color: white;
-  transform: translateY(-3px);
+  transform: translateY(-4px); /* Consistent with primary */
+  box-shadow: 0 12px 30px rgba(64, 156, 255, 0.3); /* Add shadow for consistency */
 }
 
 /* Animations */
@@ -568,9 +755,237 @@ body {
   margin: 0 auto;
 }
 
+/* About Section - Compact Design */
 .section-alt {
-  padding: 4rem 2rem;
-  background: rgba(255, 255, 255, 0.3);
+  padding: 3rem 2rem;
+  background: linear-gradient(135deg, rgba(64, 156, 255, 0.02) 0%, rgba(248, 250, 252, 0.6) 50%, rgba(100, 200, 255, 0.03) 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.section-alt::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(circle at 20% 30%, rgba(64, 156, 255, 0.04) 0%, transparent 50%),
+    radial-gradient(circle at 80% 70%, rgba(100, 200, 255, 0.03) 0%, transparent 45%);
+  animation: aboutFloat 25s ease-in-out infinite;
+  z-index: 0;
+}
+
+@keyframes aboutFloat {
+  0%, 100% { 
+    transform: translateY(0px) scale(1);
+    opacity: 1;
+  }
+  50% { 
+    transform: translateY(-5px) scale(1.01);
+    opacity: 0.9;
+  }
+}
+
+.about-content {
+  position: relative;
+  z-index: 1;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.about-main-content {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(15px);
+  border-radius: 18px;
+  padding: 2.5rem;
+  border: 1px solid rgba(64, 156, 255, 0.15);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 2rem;
+}
+
+.about-main-content::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #409cff, #64c8ff);
+}
+
+.about-header {
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+.about-header h2 {
+  font-size: 2.2rem;
+  margin-bottom: 1rem;
+  color: #1e293b;
+  position: relative;
+}
+
+.about-header h2::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 3px;
+  background: linear-gradient(90deg, #409cff, #64c8ff);
+  border-radius: 2px;
+}
+
+.about-header p {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: #475569;
+  max-width: 800px;
+  margin: 0 auto 2rem;
+}
+
+.about-features {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.about-feature {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 1.5rem;
+  background: rgba(64, 156, 255, 0.04);
+  border-radius: 15px;
+  border: 1px solid rgba(64, 156, 255, 0.08);
+  transition: all 0.3s ease;
+}
+
+.about-feature:hover {
+  transform: translateY(-5px);
+  background: rgba(64, 156, 255, 0.08);
+  border-color: rgba(64, 156, 255, 0.2);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.about-feature-icon {
+  background: linear-gradient(135deg, #409cff, #64c8ff);
+  color: white;
+  padding: 1rem;
+  border-radius: 15px;
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  height: 60px;
+  margin-bottom: 1rem;
+  box-shadow: 0 4px 15px rgba(64, 156, 255, 0.3);
+}
+
+.about-feature-text h4 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 0.5rem;
+}
+
+.about-feature-text p {
+  font-size: 0.9rem;
+  color: #64748b;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.service-areas-compact {
+  background: rgba(64, 156, 255, 0.05);
+  border-radius: 15px;
+  padding: 1.5rem;
+  border: 1px solid rgba(64, 156, 255, 0.1);
+}
+
+.service-areas-title {
+  color: #409cff;
+  margin: 0 0 1rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+.service-areas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+}
+
+.area-tag {
+  background: linear-gradient(135deg, rgba(64, 156, 255, 0.1), rgba(100, 200, 255, 0.05));
+  color: #409cff;
+  padding: 0.4rem 0.8rem;
+  border-radius: 20px;
+  font-weight: 600;
+  border: 1px solid rgba(64, 156, 255, 0.15);
+  font-size: 0.8rem;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.area-tag:hover {
+  transform: translateY(-1px);
+  border-color: rgba(64, 156, 255, 0.3);
+  background: linear-gradient(135deg, rgba(64, 156, 255, 0.15), rgba(100, 200, 255, 0.08));
+  color: #1d4ed8;
+}
+
+.about-cta {
+  text-align: center;
+}
+
+.about-cta .btn {
+  font-size: 1rem;
+  padding: 1rem 2rem;
+  border-radius: 25px;
+  background: linear-gradient(135deg, #409cff, #64c8ff);
+  color: white;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  box-shadow: 0 6px 20px rgba(64, 156, 255, 0.25);
+  position: relative;
+  overflow: hidden;
+}
+
+.about-cta .btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.4s ease;
+}
+
+.about-cta .btn:hover::before {
+  left: 100%;
+}
+
+.about-cta .btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(64, 156, 255, 0.35);
 }
 
 /* Contact section specific styling for better fit */
@@ -590,9 +1005,10 @@ body {
 }
 
 .section-header h2 {
-  font-size: 2.5rem;
-  margin-bottom: 1rem;
+  font-size: 2.75rem; /* Slightly larger for better impact */
+  margin-bottom: 1.25rem; /* Better spacing */
   color: #1e293b;
+  font-weight: 700; /* Stronger weight for better hierarchy */
 }
 
 .section-header p {
@@ -610,15 +1026,15 @@ body {
 }
 
 .service-card {
-  background: rgba(255, 255, 255, 0.8);
+  background: rgba(255, 255, 255, 0.85); /* Slightly more opaque */
   border-radius: 20px;
-  padding: 2.5rem;
+  padding: 2.75rem; /* More generous padding */
   text-align: center;
-  border: 1px solid rgba(100, 200, 255, 0.2);
+  border: 1px solid rgba(100, 200, 255, 0.25); /* Slightly more visible border */
   transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.08); /* Enhanced shadow */
 }
 
 .service-card::before {
@@ -636,10 +1052,31 @@ body {
   left: 100%;
 }
 
+.service-card::after {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(45deg, #a8d4ff, #c4e3ff, #a8d4ff, #c4e3ff);
+  background-size: 400% 400%;
+  border-radius: 22px;
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  animation: gradientShift 3s ease-in-out infinite;
+}
+
 .service-card:hover {
-  transform: translateY(-10px);
-  border-color: rgba(100, 200, 255, 0.4);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  transform: translateY(-12px); /* Slightly more dramatic lift */
+  border-color: rgba(100, 200, 255, 0.5);
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.12); /* More dramatic shadow */
+  background: rgba(255, 255, 255, 0.95); /* Even more opaque on hover */
+}
+
+.service-card:hover::after {
+  opacity: 0.7;
 }
 
 .service-icon {
@@ -673,12 +1110,20 @@ body {
 
 /* Service Areas */
 .service-areas-title {
-  color: #2563eb;
+  color: #409cff;
   margin: 3rem 0 1.5rem;
   font-size: 1.4rem;
   font-weight: 700;
   text-align: center;
   position: relative;
+}
+
+/* Mobile Service Areas Title */
+@media (max-width: 768px) {
+  .service-areas-title {
+    margin: 2rem 0 1rem; /* Reduced margins for mobile */
+    font-size: 1.2rem; /* Smaller title */
+  }
 }
 
 .service-areas-title::after {
@@ -695,17 +1140,17 @@ body {
 
 .service-areas {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 1.5rem;
-  margin-top: 2.5rem;
-  max-width: 700px;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Slightly larger minimum */
+  gap: 1.75rem; /* More breathing room */
+  margin-top: 2.75rem;
+  max-width: 750px; /* Slightly wider */
   margin-left: auto;
   margin-right: auto;
 }
 
 .area-tag {
   background: linear-gradient(135deg, rgba(64, 156, 255, 0.1), rgba(100, 200, 255, 0.05));
-  color: #2563eb;
+  color: #409cff;
   padding: 1rem 1.5rem;
   border-radius: 15px;
   font-weight: 600;
@@ -744,20 +1189,20 @@ body {
 .contact-info {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 1.5rem;
-  margin-top: 1.5rem;
-  max-width: 800px;
+  gap: 2rem; /* More breathing room */
+  margin-top: 2rem;
+  max-width: 900px; /* Slightly wider for better balance */
   margin-left: auto;
   margin-right: auto;
 }
 
 .contact-item {
-  background: rgba(255, 255, 255, 0.9);
-  padding: 2rem;
-  border-radius: 15px;
+  background: rgba(255, 255, 255, 0.92); /* More opaque */
+  padding: 2.25rem; /* More generous padding */
+  border-radius: 18px; /* Slightly more rounded */
   border: 1px solid rgba(100, 200, 255, 0.3);
   transition: all 0.3s ease;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.1); /* Enhanced shadow */
   text-align: center;
   position: relative;
   overflow: hidden;
@@ -780,7 +1225,7 @@ body {
 }
 
 .contact-item h4 {
-  color: #2563eb;
+  color: #409cff;
   margin-bottom: 1rem;
   font-size: 1.2rem;
   font-weight: 700;
@@ -793,7 +1238,7 @@ body {
 }
 
 .contact-item a {
-  color: #2563eb;
+  color: #409cff;
   text-decoration: none;
   font-weight: bold;
   transition: color 0.3s ease;
@@ -1037,10 +1482,110 @@ body:has(.edit-mode-indicator) .editable-element {
   cursor: pointer;
 }
 
+/* Mobile Menu Button */
+.mobile-menu-btn {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: #1e293b;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  z-index: 1001; /* Ensure it's above other elements */
+  position: relative;
+}
+
+.mobile-menu-btn:hover {
+  background: rgba(37, 99, 235, 0.1);
+  color: #409cff;
+}
+
+.mobile-menu-btn:focus {
+  outline: 2px solid #409cff;
+  outline-offset: 2px;
+}
+
+/* Mobile Navigation Menu */
+.mobile-nav {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background: rgba(248, 250, 252, 0.98);
+  backdrop-filter: blur(20px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  border-top: 1px solid rgba(37, 99, 235, 0.2);
+  transform: translateY(-20px);
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+  z-index: 999;
+}
+
+.mobile-nav-open {
+  transform: translateY(0);
+  opacity: 1;
+  visibility: visible;
+}
+
+.mobile-nav-links {
+  list-style: none;
+  padding: 1rem 0;
+  margin: 0;
+}
+
+.mobile-nav-links li {
+  border-bottom: 1px solid rgba(37, 99, 235, 0.1);
+}
+
+.mobile-nav-links li:last-child {
+  border-bottom: none;
+}
+
+.mobile-nav-links a {
+  display: block;
+  padding: 1rem 2rem;
+  color: #1e293b;
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.mobile-nav-links a:hover {
+  background: rgba(37, 99, 235, 0.05);
+  color: #409cff;
+  padding-left: 2.5rem;
+}
+
+.mobile-nav-links a::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: linear-gradient(135deg, #409cff, #64c8ff);
+  transform: scaleY(0);
+  transition: transform 0.3s ease;
+}
+
+.mobile-nav-links a:hover::before {
+  transform: scaleY(1);
+}
+
 /* Mobile Responsiveness */
 @media (max-width: 768px) {
   .nav-links {
     display: none;
+  }
+
+  .mobile-menu-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
   
   .logo-img {
@@ -1049,66 +1594,155 @@ body:has(.edit-mode-indicator) .editable-element {
   }
   
   .hero {
-    padding: 5rem 1rem 2rem; /* Better top padding for mobile nav */
-    min-height: 100vh; /* Fallback for older browsers */
-    min-height: 100dvh; /* Use dynamic viewport height */
+    padding: 6rem 1.5rem 3rem; /* Better spacing with more breathing room */
+    min-height: 100dvh; /* Full viewport height on mobile */
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
   
   .hero::before,
   .hero::after {
-    animation-duration: 35s; /* Slower animation on mobile for better performance */
+    animation-duration: 35s;
   }
   
   .hero-container::before,
   .hero-container::after {
-    display: none; /* Hide decorative bubbles on mobile to reduce clutter */
+    display: none;
   }
   
   .hero-container {
     grid-template-columns: 1fr;
-    gap: 1.5rem; /* Reduce gap for mobile */
+    gap: 3.5rem; /* Even more breathing room between content and visual */
     text-align: center;
+    max-width: none; /* Remove width constraint for full-screen text */
+    margin: 0;
+    padding: 0 1.25rem; /* Better padding for mobile */
+  }
+  
+  .hero-content {
+    order: 1; /* Ensure content comes first on mobile */
+    padding: 1rem 0; /* Add vertical padding for breathing room */
+  }
+  
+  .hero-visual {
+    order: 2; /* Visual card comes second */
+  }
+  
+  .hero h1 {
+    font-size: clamp(2rem, 8vw, 2.8rem); /* Better responsive sizing */
+    margin-bottom: 1.25rem;
+    line-height: 1.2;
+  }
+  
+  .hero p {
+    font-size: 1.08rem; /* Slightly larger for better readability */
+    margin-bottom: 2.75rem; /* More generous spacing */
+    line-height: 1.65; /* Better line height for readability */
+    max-width: none; /* Remove width constraint for full-screen text */
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0 0.75rem; /* More padding for better readability */
   }
   
   .hero-features {
+    display: flex; /* Show features on mobile now that they're more engaging */
     flex-direction: column;
     gap: 1rem;
-    margin-bottom: 1.5rem; /* Reduce bottom margin on mobile */
+    margin-bottom: 2rem;
+  }
+  
+  .feature-item {
+    padding: 0.75rem 1rem;
+    flex-direction: row;
+    justify-content: flex-start;
+    text-align: left;
+  }
+  
+  .feature-icon {
+    width: 2.5rem;
+    height: 2.5rem;
+    font-size: 1.2rem;
+  }
+  
+  .feature-item h4 {
+    font-size: 0.9rem;
+  }
+  
+  .feature-item p {
+    font-size: 0.8rem;
+  }
+  
+  .trust-badges {
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .trust-badge {
+    padding: 0.6rem 1rem;
+    font-size: 0.85rem;
+    justify-content: center;
   }
   
   .hero-cta {
     flex-direction: column;
-    gap: 1rem; /* Reduce gap for better mobile fit */
-  }
-  
-  .hero p {
-    font-size: 1rem; /* Slightly smaller text on mobile */
-    margin-bottom: 1.5rem; /* Reduce margin for mobile */
+    gap: 1.25rem;
+    align-items: center;
+    max-width: none; /* Remove width constraint for full-screen layout */
+    margin: 0 auto;
   }
   
   .phone-section {
     width: 100%;
+    max-width: 320px;
     justify-content: center;
+    padding: 1.25rem 1.5rem; /* More padding for better touch */
+    margin: 0 auto;
+  }
+  
+  .phone-number {
+    font-size: 1.4rem; /* Larger phone number for easier reading */
+    font-weight: 700;
+  }
+  
+  .phone-label {
+    font-size: 1rem; /* Slightly larger label */
   }
   
   .cta-buttons {
     flex-direction: column;
     align-items: center;
     width: 100%;
+    gap: 1rem; /* Consistent spacing between buttons */
   }
   
   .btn {
     width: 100%;
-    max-width: 280px;
-    font-size: 1rem; /* Smaller font on mobile */
-    padding: 0.9rem 2rem; /* Adjust padding for mobile */
+    max-width: 300px; /* Slightly wider for better touch */
+    font-size: 1.05rem; /* Larger text for better readability */
+    padding: 1.1rem 2rem; /* More padding for better touch target */
+    min-height: 52px; /* Ensure good touch target size */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1.3;
+  }
+  
+  .btn-primary {
+    font-weight: 600; /* Slightly bolder for primary actions */
+  }
+  
+  .contact-cta {
+    margin-top: 1.5rem; /* Add spacing above the CTA */
   }
   
   .contact-cta .btn {
-    font-size: 0.95rem; /* Even smaller for contact CTA */
-    padding: 1rem 1.5rem;
-    line-height: 1.2; /* Better line spacing */
-    min-height: auto;
+    font-size: 1rem;
+    padding: 1.2rem 1.5rem;
+    line-height: 1.3;
+    min-height: 54px; /* Larger touch target for main CTA */
+    max-width: 100%; /* Use full width available */
   }
   
   .btn-text-mobile {
@@ -1125,16 +1759,42 @@ body:has(.edit-mode-indicator) .editable-element {
   
   .visual-card {
     max-width: 100%;
+    padding: 1.5rem; /* Better breathing room */
+    margin: 0 auto;
+    border-radius: 16px; /* Slightly smaller radius for mobile */
+    max-width: 360px; /* Prevent it from being too wide on larger mobile screens */
   }
   
   .service-stats {
-    grid-template-columns: 1fr;
-    gap: 1rem;
+    grid-template-columns: repeat(3, 1fr); /* Keep 3 columns but smaller */
+    gap: 1rem; /* Slightly more breathing room */
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.5rem;
+  }
+  
+  .stat-item {
+    text-align: center;
+  }
+  
+  .stat-number {
+    font-size: 1.6rem; /* Slightly larger for better impact */
+    margin-bottom: 0.25rem;
+  }
+  
+  .stat-label {
+    font-size: 0.75rem; /* Smaller label text */
+    line-height: 1.3;
+  }
+  
+  .hero-call-now h4 {
+    font-size: 1rem;
+    margin-bottom: 0.75rem;
   }
   
   .hero-cta-btn {
-    font-size: 0.9rem;
-    padding: 0.9rem 1.2rem;
+    font-size: 0.95rem;
+    padding: 1rem 1.5rem;
+    min-height: 48px; /* Better touch target */
   }
   
   .area-tags {
@@ -1151,102 +1811,233 @@ body:has(.edit-mode-indicator) .editable-element {
 
   .services-grid {
     grid-template-columns: 1fr;
+    gap: 2rem; /* More space between service cards */
+    max-width: 400px;
+    margin: 0 auto;
+  }
+  
+  .service-card {
+    padding: 2.25rem 1.75rem; /* More generous padding for mobile */
+    max-width: 420px; /* Prevent cards from being too wide */
+    margin: 0 auto; /* Center the cards */
+  }
+  
+  .service-card h3 {
+    font-size: 1.4rem; /* Larger service titles */
+    margin-bottom: 1rem;
+    line-height: 1.3;
+  }
+  
+  .service-card p {
+    font-size: 1rem; /* Larger description text */
+    line-height: 1.6;
+    margin: 0;
+  }
+  
+  .service-icon {
+    width: 75px; /* Better proportioned icons on mobile */
+    height: 75px;
+    margin-bottom: 1.5rem;
+    font-size: 1.85rem;
   }
   
   .contact-info {
     grid-template-columns: 1fr;
-    gap: 1rem;
+    gap: 1rem; /* Reduced gap for better flow */
+    max-width: 100%; /* Use full available width */
+    margin: 0; /* Remove auto centering */
+    padding: 0 0.5rem; /* Add padding instead of constraining width */
   }
   
   .contact-item {
-    padding: 1.5rem;
+    padding: 1.75rem 1.5rem; /* More generous padding */
+    border-radius: 15px; /* Slightly more rounded */
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.1); /* Enhanced shadow */
+    background: rgba(255, 255, 255, 0.97); /* Even more opaque */
+    border: 1px solid rgba(64, 156, 255, 0.15); /* Subtle border */
+  }
+  
+  .contact-item h4 {
+    font-size: 1.15rem; /* Better readability */
+    margin-bottom: 0.875rem; /* Better spacing */
+    color: #409cff;
+    font-weight: 700; /* Stronger weight for better hierarchy */
+  }
+  
+  .contact-item p {
+    font-size: 0.95rem; /* Consistent with other mobile text */
+    line-height: 1.5;
+    color: #475569;
+  }
+  
+  .contact-item a {
+    font-size: 1rem; /* More consistent sizing */
+    padding: 0.25rem 0;
+    display: inline-block;
+    color: #409cff;
+    font-weight: 600;
   }
   
   .service-areas {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1rem;
+    grid-template-columns: repeat(3, 1fr); /* More columns for compactness */
+    gap: 0.5rem; /* Smaller gaps */
+    max-width: 100%; /* Use full width available */
+    margin: 1.5rem auto 0; /* Reduced top margin */
   }
   
   .area-tag {
-    padding: 0.75rem 1rem;
-    font-size: 0.9rem;
+    padding: 0.6rem 0.75rem; /* Smaller padding */
+    font-size: 0.8rem; /* Smaller text */
+    line-height: 1.2;
+    min-height: 36px; /* Smaller touch target but still accessible */
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
   
   .section {
-    padding: 3rem 1rem;
+    padding: 4rem 1.5rem; /* More generous padding */
+    min-height: 100dvh; /* Full viewport height on mobile */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
   }
   
   .section-alt {
-    padding: 3rem 1rem;
+    padding: 3rem 1.5rem; /* Reduced padding for about section */
+    min-height: 100dvh; /* Full viewport height on mobile */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
   }
   
   #contact {
-    padding: 2rem 1rem 1.5rem;
+    padding: 3rem 1.5rem 2rem; /* More padding for contact section */
+    min-height: 100dvh; /* Full viewport height on mobile */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  
+  .section-header {
+    margin-bottom: 2.5rem; /* More space after headers */
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .section-header h2 {
+    font-size: clamp(1.8rem, 6vw, 2.2rem); /* Better responsive sizing */
+    margin-bottom: 1rem;
+  }
+  
+  .section-header p {
+    font-size: 1.05rem; /* Slightly larger for better readability */
+    line-height: 1.6;
   }
 }
 
 @media (max-width: 480px) {
   .hero {
-    padding: 4rem 0.75rem 1.5rem; /* Tighter padding for small screens */
+    padding: 5rem 1rem 2rem; /* Better spacing for very small screens */
+    min-height: 100dvh; /* Full viewport height on small mobile */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .hero-container {
+    gap: 2.5rem; /* Adequate spacing for very small screens */
+    max-width: none; /* Full width on very small screens */
+    padding: 0 0.75rem; /* Tighter padding for very small screens */
   }
   
   .hero h1 {
-    font-size: 2rem;
-    margin-bottom: 1rem; /* Reduce margin */
+    font-size: clamp(1.75rem, 7vw, 2.2rem);
+    margin-bottom: 1rem;
   }
   
   .hero p {
+    font-size: 1rem;
+    margin-bottom: 2rem; /* More breathing room */
+    max-width: none; /* Full width text */
+    padding: 0 0.25rem; /* Slight padding for readability */
+  }
+  
+  .visual-card {
+    padding: 1.25rem;
+    max-width: 100%;
+    margin: 0;
+  }
+  
+  .service-stats {
+    grid-template-columns: 1fr; /* Single column on very small screens */
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+    padding-bottom: 1.25rem;
+  }
+  
+  .stat-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    text-align: left;
+    padding: 0.75rem;
+    background: rgba(37, 99, 235, 0.05);
+    border-radius: 8px;
+  }
+  
+  .stat-number {
+    font-size: 1.75rem;
+    margin-bottom: 0;
+    color: #409cff;
+    font-weight: 700;
+  }
+  
+  .stat-label {
+    font-size: 0.85rem;
+    margin: 0;
+    text-align: right;
+    flex: 1;
+    margin-left: 1rem;
+  }
+  
+  .hero-call-now h4 {
     font-size: 0.95rem;
-    margin-bottom: 1rem;
-  }
-  
-  .hero-features {
-    gap: 0.75rem;
-    margin-bottom: 1rem;
-  }
-  
-  .feature-item {
-    flex-direction: column;
-    text-align: center;
-    gap: 0.5rem;
-  }
-  
-  .feature-item h4 {
-    font-size: 0.9rem;
-  }
-  
-  .feature-item p {
-    font-size: 0.8rem;
-  }
-  
-  .feature-icon {
-    font-size: 1.2rem;
-    width: 1.2rem;
-    height: 1.2rem;
-    padding: 0.6rem;
-  }
-  
-  .phone-section {
-    padding: 0.75rem 1rem;
+    margin-bottom: 0.75rem;
   }
   
   .hero-cta-btn {
-    font-size: 0.85rem;
-    padding: 0.8rem 1rem;
+    font-size: 0.9rem;
+    padding: 1rem 1.25rem;
+    min-height: 48px;
+  }
+  
+  .phone-section {
+    padding: 1rem 1.25rem;
+    max-width: 100%;
   }
   
   .section-header h2 {
-    font-size: 2rem;
+    font-size: clamp(1.6rem, 6vw, 2rem);
+  }
+  
+  .service-areas-title {
+    margin: 1.5rem 0 0.75rem; /* Even more compact margins */
+    font-size: 1.1rem; /* Smaller title for very small screens */
   }
   
   .service-areas {
-    grid-template-columns: 1fr;
-    gap: 1rem;
+    grid-template-columns: repeat(2, 1fr); /* Two columns even on very small screens */
+    gap: 0.5rem; /* Smaller gap */
+    max-width: 100%;
+    margin: 1rem auto 0; /* Even less top margin */
   }
   
   .area-tag {
-    padding: 0.75rem 1rem;
-    font-size: 0.85rem;
+    padding: 0.5rem 0.6rem; /* More compact padding */
+    font-size: 0.75rem; /* Even smaller text */
+    min-height: 32px; /* Smaller but still tappable */
   }
   
   .nav-content {
@@ -1254,12 +2045,178 @@ body:has(.edit-mode-indicator) .editable-element {
   }
   
   .contact-cta .btn {
-    font-size: 0.85rem; /* Smaller text for very small screens */
-    padding: 0.8rem 1rem;
-    max-width: 100%; /* Allow full width on very small screens */
+    font-size: 0.95rem;
+    padding: 1.1rem 1.25rem;
+    max-width: 100%;
+    min-height: 50px;
+    margin-top: 0.5rem; /* Add margin for breathing room */
+  }
+  
+  .btn {
+    max-width: 100%;
+    font-size: 1rem;
+    padding: 1rem 1.5rem;
   }
   
   .btn-text-mobile {
-    display: inline; /* Ensure mobile text shows on very small screens */
+    display: inline;
+  }
+  
+  .contact-info {
+    max-width: 100%;
+    gap: 0.75rem; /* Even tighter spacing for very small screens */
+    padding: 0 0.25rem; /* Minimal padding */
+  }
+  
+  .contact-item {
+    padding: 1.25rem 1rem; /* More compact for very small screens */
+    border-radius: 10px; /* Slightly smaller radius */
+  }
+  
+  .contact-item h4 {
+    font-size: 1rem; /* Smaller heading */
+    margin-bottom: 0.5rem;
+  }
+  
+  .contact-item p {
+    font-size: 0.9rem; /* Smaller text */
+    line-height: 1.4;
+  }
+  
+  .contact-item a {
+    font-size: 0.95rem; /* Consistent smaller sizing */
+  }
+  
+  .section {
+    padding: 3rem 1rem;
+    min-height: 100dvh; /* Full viewport height on small mobile */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  
+  .section-alt {
+    padding: 2.5rem 1rem; /* Even more compact for very small screens */
+    min-height: 100dvh; /* Full viewport height on small mobile */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  
+  #contact {
+    padding: 2.5rem 1rem 1.5rem;
+    min-height: 100dvh; /* Full viewport height on small mobile */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+} 
+
+/* Mobile responsiveness for About section */
+@media (max-width: 768px) {
+  .section-alt {
+    padding: 2.5rem 1.5rem;
+  }
+  
+  .about-main-content {
+    padding: 2rem 1.5rem;
+    border-radius: 15px;
+  }
+  
+  .about-header {
+    margin-bottom: 2rem;
+  }
+  
+  .about-header h2 {
+    font-size: 1.8rem;
+  }
+  
+  .about-header p {
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .about-features {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .about-feature {
+    padding: 1.25rem;
+    flex-direction: row;
+    text-align: left;
+  }
+  
+  .about-feature-icon {
+    width: 50px;
+    height: 50px;
+    font-size: 1.2rem;
+    margin-bottom: 0;
+    margin-right: 1rem;
+    flex-shrink: 0;
+  }
+  
+  .service-areas-compact {
+    padding: 1.25rem;
+  }
+  
+  .service-areas {
+    gap: 0.4rem;
+    margin-bottom: 1.25rem;
+  }
+  
+  .area-tag {
+    padding: 0.4rem 0.7rem;
+    font-size: 0.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .section-alt {
+    padding: 2rem 1rem;
+  }
+  
+  .about-main-content {
+    padding: 1.5rem 1rem;
+  }
+  
+  .about-header h2 {
+    font-size: 1.6rem;
+  }
+  
+  .about-header p {
+    font-size: 0.95rem;
+  }
+  
+  .about-feature {
+    padding: 1rem;
+  }
+  
+  .about-feature-icon {
+    width: 45px;
+    height: 45px;
+    font-size: 1.1rem;
+  }
+  
+  .about-feature-text h4 {
+    font-size: 1rem;
+  }
+  
+  .about-feature-text p {
+    font-size: 0.85rem;
+  }
+  
+  .service-areas-compact {
+    padding: 1rem;
+  }
+  
+  .service-areas-title {
+    font-size: 1rem;
+  }
+  
+  .about-cta .btn {
+    font-size: 0.9rem;
+    padding: 0.8rem 1.5rem;
   }
 } 

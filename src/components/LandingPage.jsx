@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FaHome, FaSwimmer, FaHardHat, FaPhone, FaClock, FaShieldAlt, FaTruck, FaTint, FaWater } from 'react-icons/fa';
+import { FaHome, FaSwimmer, FaHardHat, FaPhone, FaClock, FaShieldAlt, FaTruck, FaTint, FaWater, FaBars, FaTimes } from 'react-icons/fa';
 import EditableElement from './EditableElement';
 import EditModeIndicator from './EditModeIndicator';
 import AquaFreshLogo from './AquaFreshLogo';
 
 function LandingPage({ content, auth, isAdminRoute }) {
   const [navScrolled, setNavScrolled] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -18,6 +19,31 @@ function LandingPage({ content, auth, isAdminRoute }) {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  // Close mobile menu when clicking outside or on scroll
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (mobileMenuOpen && !event.target.closest('.nav')) {
+        setMobileMenuOpen(false);
+      }
+    };
+
+    const handleScroll = () => {
+      if (mobileMenuOpen) {
+        setMobileMenuOpen(false);
+      }
+    };
+
+    if (mobileMenuOpen) {
+      document.addEventListener('click', handleClickOutside);
+      window.addEventListener('scroll', handleScroll);
+    }
+
+    return () => {
+      document.removeEventListener('click', handleClickOutside);
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [mobileMenuOpen]);
 
   useEffect(() => {
     // Setup intersection observer for animations
@@ -31,6 +57,14 @@ function LandingPage({ content, auth, isAdminRoute }) {
         if (entry.isIntersecting) {
           entry.target.style.opacity = '1';
           entry.target.style.transform = 'translateY(0)';
+          
+          // Animate counters
+          if (entry.target.classList.contains('stat-number')) {
+            const finalValue = parseInt(entry.target.textContent);
+            if (finalValue && !isNaN(finalValue)) {
+              animateCounter(entry.target, finalValue);
+            }
+          }
         }
       });
     }, observerOptions);
@@ -44,8 +78,29 @@ function LandingPage({ content, auth, isAdminRoute }) {
       observer.observe(card);
     });
 
+    // Observe stat numbers for counter animation
+    const statNumbers = document.querySelectorAll('.stat-number');
+    statNumbers.forEach(stat => {
+      observer.observe(stat);
+    });
+
     return () => observer.disconnect();
   }, []);
+
+  // Counter animation function
+  const animateCounter = (element, finalValue) => {
+    let currentValue = 0;
+    const increment = finalValue / 50; // Animation steps
+    const timer = setInterval(() => {
+      currentValue += increment;
+      if (currentValue >= finalValue) {
+        currentValue = finalValue;
+        clearInterval(timer);
+      }
+      // Only add '+' for numbers between 100-999 (not for years like 1998)
+      element.textContent = Math.round(currentValue) + (finalValue >= 100 && finalValue < 1000 ? '+' : '');
+    }, 30);
+  };
 
   useEffect(() => {
     // Parallax effect for floating elements
@@ -66,13 +121,24 @@ function LandingPage({ content, auth, isAdminRoute }) {
   // Smooth scrolling for navigation links
   const handleNavClick = (e, targetId) => {
     e.preventDefault();
+    setMobileMenuOpen(false); // Close mobile menu when nav item is clicked
     const target = document.querySelector(targetId);
     if (target) {
-      target.scrollIntoView({
-        behavior: 'smooth',
-        block: 'start'
+      // Calculate offset to account for fixed navigation height
+      const navHeight = 80; // Approximate height of fixed nav
+      const targetPosition = target.offsetTop - navHeight;
+      
+      window.scrollTo({
+        top: targetPosition,
+        behavior: 'smooth'
       });
     }
+  };
+
+  // Toggle mobile menu
+  const toggleMobileMenu = () => {
+    console.log('Toggling mobile menu, current state:', mobileMenuOpen);
+    setMobileMenuOpen(!mobileMenuOpen);
   };
 
   const handleAdminAccess = () => {
@@ -107,7 +173,29 @@ function LandingPage({ content, auth, isAdminRoute }) {
             className="logo-container" 
             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
           />
+          
+          {/* Desktop Navigation */}
           <ul className="nav-links">
+            <li><a href="#home" onClick={(e) => handleNavClick(e, '#home')} aria-label="Go to homepage">Home</a></li>
+            <li><a href="#services" onClick={(e) => handleNavClick(e, '#services')} aria-label="View our services">Services</a></li>
+            <li><a href="#about" onClick={(e) => handleNavClick(e, '#about')} aria-label="Learn about us">About</a></li>
+            <li><a href="#contact" onClick={(e) => handleNavClick(e, '#contact')} aria-label="Contact us">Contact</a></li>
+          </ul>
+
+          {/* Mobile Menu Button */}
+          <button 
+            className="mobile-menu-btn"
+            onClick={toggleMobileMenu}
+            aria-label="Toggle mobile menu"
+            aria-expanded={mobileMenuOpen}
+          >
+            {mobileMenuOpen ? <FaTimes /> : <FaBars />}
+          </button>
+        </div>
+
+        {/* Mobile Navigation Menu */}
+        <div className={`mobile-nav ${mobileMenuOpen ? 'mobile-nav-open' : ''}`}>
+          <ul className="mobile-nav-links">
             <li><a href="#home" onClick={(e) => handleNavClick(e, '#home')} aria-label="Go to homepage">Home</a></li>
             <li><a href="#services" onClick={(e) => handleNavClick(e, '#services')} aria-label="View our services">Services</a></li>
             <li><a href="#about" onClick={(e) => handleNavClick(e, '#about')} aria-label="Learn about us">About</a></li>
@@ -135,27 +223,47 @@ function LandingPage({ content, auth, isAdminRoute }) {
               editMode={content.editMode}
               onUpdate={content.updateContent}
             />
-            
-            <div className="hero-cta">
-              <div className="cta-buttons">
-                <a href="tel:7809148384" className="btn btn-primary" aria-label="Call now for water delivery">
-                  <EditableElement
-                    tag="span"
-                    contentKey="primaryButtonText"
-                    content={content.content}
-                    editMode={content.editMode}
-                    onUpdate={content.updateContent}
-                  />
-                </a>
-                <a href="#services" onClick={(e) => handleNavClick(e, '#services')} className="btn btn-secondary" aria-label="Learn about our water hauling services">
-                  <EditableElement
-                    tag="span"
-                    contentKey="secondaryButtonText"
-                    content={content.content}
-                    editMode={content.editMode}
-                    onUpdate={content.updateContent}
-                  />
-                </a>
+
+            {/* Hero Features */}
+            <div className="hero-features">
+              <div className="feature-item">
+                <div className="feature-icon">
+                  <FaClock />
+                </div>
+                <div className="feature-content">
+                  <h4>Same Day Service</h4>
+                  <p>Quick response times</p>
+                </div>
+              </div>
+              <div className="feature-item">
+                <div className="feature-icon">
+                  <FaShieldAlt />
+                </div>
+                <div className="feature-content">
+                  <h4>Licensed & Insured</h4>
+                  <p>Professional service</p>
+                </div>
+              </div>
+              <div className="feature-item">
+                <div className="feature-icon">
+                  <FaTruck />
+                </div>
+                <div className="feature-content">
+                  <h4>Modern Fleet</h4>
+                  <p>Clean delivery trucks</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Trust Badges */}
+            <div className="trust-badges">
+              <div className="trust-badge">
+                <FaWater className="trust-icon" />
+                <span>Potable Water Certified</span>
+              </div>
+              <div className="trust-badge">
+                <FaPhone className="trust-icon" />
+                <span>24/7 Available</span>
               </div>
             </div>
           </div>
@@ -337,28 +445,77 @@ function LandingPage({ content, auth, isAdminRoute }) {
       {/* About Section */}
       <section className="section-alt" id="about" role="main">
         <div className="about-content">
-          <div className="section-header">
-            <EditableElement
-              tag="h2"
-              contentKey="aboutTitle"
-              content={content.content}
-              editMode={content.editMode}
-              onUpdate={content.updateContent}
-            />
-            <EditableElement
-              tag="p"
-              contentKey="aboutDescription"
-              content={content.content}
-              editMode={content.editMode}
-              onUpdate={content.updateContent}
-            />
-          </div>
-          
-          <h3 className="service-areas-title">Service Areas</h3>
-          <div className="service-areas">
-            {serviceAreas.map((area, index) => (
-              <div key={index} className="area-tag">{area}</div>
-            ))}
+          <div className="about-main-content">
+            <div className="about-header">
+              <EditableElement
+                tag="h2"
+                contentKey="aboutTitle"
+                content={content.content}
+                editMode={content.editMode}
+                onUpdate={content.updateContent}
+              />
+              <EditableElement
+                tag="p"
+                contentKey="aboutDescription"
+                content={content.content}
+                editMode={content.editMode}
+                onUpdate={content.updateContent}
+              />
+            </div>
+            
+            <div className="about-features">
+              <div className="about-feature">
+                <div className="about-feature-icon">
+                  <FaShieldAlt />
+                </div>
+                <div className="about-feature-text">
+                  <h4>Quality Assurance</h4>
+                  <p>Premium water tested for purity and safety</p>
+                </div>
+              </div>
+              
+              <div className="about-feature">
+                <div className="about-feature-icon">
+                  <FaTruck />
+                </div>
+                <div className="about-feature-text">
+                  <h4>Reliable Delivery</h4>
+                  <p>On-time delivery you can count on</p>
+                </div>
+              </div>
+              
+              <div className="about-feature">
+                <div className="about-feature-icon">
+                  <FaClock />
+                </div>
+                <div className="about-feature-text">
+                  <h4>24/7 Service</h4>
+                  <p>Available when you need us most</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="service-areas-compact">
+              <h3 className="service-areas-title">Service Areas</h3>
+              <div className="service-areas">
+                {serviceAreas.map((area, index) => (
+                  <div key={index} className="area-tag">{area}</div>
+                ))}
+              </div>
+              
+              <div className="about-cta">
+                <a href="tel:7809148384" className="btn btn-primary" aria-label="Call now for water delivery">
+                  <FaPhone />
+                  <EditableElement
+                    tag="span"
+                    contentKey="primaryButtonText"
+                    content={content.content}
+                    editMode={content.editMode}
+                    onUpdate={content.updateContent}
+                  />
+                </a>
+              </div>
+            </div>
           </div>
         </div>
       </section>
