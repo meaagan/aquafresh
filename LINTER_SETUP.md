@@ -111,10 +111,48 @@ Add to your VS Code settings:
 - ✅ 272 → 23 issues resolved (91% improvement)
 - ⚠️ Remaining issues are mostly console statements and some unused parameters
 
+## Pre-Commit Hooks
+
+### Setup Complete ✅
+This project now includes automatic pre-commit hooks that will:
+- Run ESLint with auto-fix on all staged JavaScript/JSX files
+- Run Prettier formatting on all staged files
+- Prevent commits if linting errors are found
+
+### How It Works
+1. **Husky**: Manages Git hooks
+2. **lint-staged**: Runs linters only on staged files (faster than full project)
+3. **Pre-commit hook**: Automatically triggered before each commit
+
+### Configuration
+```json
+"lint-staged": {
+  "src/**/*.{js,jsx}": [
+    "eslint --fix",
+    "prettier --write"
+  ],
+  "src/**/*.{json,css,md}": [
+    "prettier --write"
+  ]
+}
+```
+
+### What Happens During Commit
+1. You run `git commit`
+2. Pre-commit hook runs automatically
+3. Linting and formatting applied to staged files
+4. If no errors: commit proceeds
+5. If errors found: commit is blocked, you fix issues and try again
+
+### Bypassing Pre-Commit (Emergency Only)
+```bash
+git commit --no-verify -m "emergency commit"
+```
+
 ## Next Steps
 
 1. **Clean up remaining issues**: Run `npm run lint` to see specific remaining issues
-2. **Add pre-commit hooks**: Consider adding Husky for automatic linting before commits
+2. ✅ **Pre-commit hooks**: Already configured and working!
 3. **CI Integration**: Add linting checks to your deployment pipeline
 
 ## Files Added
@@ -122,7 +160,9 @@ Add to your VS Code settings:
 - `.eslintrc.cjs` - ESLint configuration
 - `.prettierrc.json` - Prettier configuration  
 - `.prettierignore` - Files to ignore for formatting
+- `.husky/pre-commit` - Pre-commit hook script
 - `LINTER_SETUP.md` - This documentation
+- Updated `package.json` with new scripts and lint-staged config
 
 ## Support
 
