@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
-import { 
-  signInWithEmailAndPassword, 
-  signOut, 
+import {
+  signInWithEmailAndPassword,
+  signOut,
   onAuthStateChanged,
-  createUserWithEmailAndPassword 
+  createUserWithEmailAndPassword
 } from 'firebase/auth';
 import { auth } from '../firebase/config';
 import toast from 'react-hot-toast';
@@ -14,7 +14,7 @@ export function useAuth() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
+    const unsubscribe = onAuthStateChanged(auth, user => {
       setUser(user);
       setLoading(false);
       setError(null);
@@ -27,7 +27,7 @@ export function useAuth() {
     try {
       setError(null);
       setLoading(true);
-      
+
       await signInWithEmailAndPassword(auth, email, password);
       toast.success('Login successful! ✅');
       return true;
@@ -45,7 +45,7 @@ export function useAuth() {
     try {
       setError(null);
       setLoading(true);
-      
+
       await createUserWithEmailAndPassword(auth, email, password);
       toast.success('Admin account created successfully! ✅');
       return true;
@@ -82,4 +82,4 @@ export function useAuth() {
     logout,
     isAuthenticated: !!user
   };
-} 
+}

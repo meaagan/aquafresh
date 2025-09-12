@@ -1460,11 +1460,12 @@ body {
 
 /* Disable all buttons when edit mode is active */
 body:has(.edit-mode-indicator) .btn,
-body:has(.edit-mode-indicator) button,
-body:has(.edit-mode-indicator) a[href] {
+body:has(.edit-mode-indicator) button:not(.edit-mode-indicator button):not(.admin-btn),
+body:has(.edit-mode-indicator) a[href]:not(.edit-mode-indicator a) {
   pointer-events: none;
   opacity: 0.7;
   cursor: not-allowed;
+  position: relative;
 }
 
 /* Re-enable specific admin/edit controls */
@@ -1475,11 +1476,29 @@ body:has(.edit-mode-indicator) .admin-btn {
   cursor: pointer;
 }
 
-/* Re-enable editable elements inside disabled buttons */
-body:has(.edit-mode-indicator) .editable-element {
+/* Re-enable editable elements inside disabled buttons - but only for text editing */
+body:has(.edit-mode-indicator) .btn .editable-element,
+body:has(.edit-mode-indicator) button .editable-element,
+body:has(.edit-mode-indicator) a[href] .editable-element {
   pointer-events: auto;
   opacity: 1;
-  cursor: pointer;
+  cursor: text;
+  position: relative;
+  z-index: 1;
+}
+
+/* Ensure the parent button/link stays disabled even when child elements are enabled */
+body:has(.edit-mode-indicator) .btn::before,
+body:has(.edit-mode-indicator) button:not(.edit-mode-indicator button):not(.admin-btn)::before,
+body:has(.edit-mode-indicator) a[href]:not(.edit-mode-indicator a)::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 0;
+  pointer-events: none;
 }
 
 /* Mobile Menu Button */

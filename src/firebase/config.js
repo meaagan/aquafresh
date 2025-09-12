@@ -13,16 +13,14 @@ const requiredEnvVars = [
 ];
 
 // Optional but recommended environment variables
-const optionalEnvVars = [
-  'VITE_ADMIN_SECRET_KEY'
-];
+const optionalEnvVars = ['VITE_ADMIN_SECRET_KEY'];
 
 // Check for missing optional variables and warn
 const missingOptionalVars = optionalEnvVars.filter(varName => !import.meta.env[varName]);
 if (missingOptionalVars.length > 0) {
   console.warn(
     `Optional environment variables not set: ${missingOptionalVars.join(', ')}\n` +
-    'These will use fallback values but should be set for production.'
+      'These will use fallback values but should be set for production.'
   );
 }
 
@@ -31,7 +29,7 @@ const missingVars = requiredEnvVars.filter(varName => !import.meta.env[varName])
 if (missingVars.length > 0) {
   throw new Error(
     `Missing required Firebase environment variables: ${missingVars.join(', ')}\n` +
-    'Please check your .env file and ensure all Firebase configuration variables are set.'
+      'Please check your .env file and ensure all Firebase configuration variables are set.'
   );
 }
 
@@ -62,4 +60,4 @@ export const auth = getAuth(app);
 export const db = getFirestore(app);
 
 // Export the app instance if needed
-export default app; 
+export default app;

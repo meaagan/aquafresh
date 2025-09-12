@@ -5,16 +5,10 @@ function EditModeIndicator({ onExit, onAdmin }) {
     <div className="edit-mode-indicator">
       <div className="edit-mode-indicator-content">
         <span className="edit-mode-text">EDIT MODE ACTIVE</span>
-        <button 
-          onClick={onExit}
-          className="edit-mode-btn"
-        >
+        <button onClick={onExit} className="edit-mode-btn">
           Exit
         </button>
-        <button 
-          onClick={onAdmin}
-          className="edit-mode-btn"
-        >
+        <button onClick={onAdmin} className="edit-mode-btn">
           Admin
         </button>
       </div>
@@ -22,4 +16,4 @@ function EditModeIndicator({ onExit, onAdmin }) {
   );
 }
 
-export default EditModeIndicator; 
+export default EditModeIndicator;

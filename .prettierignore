@@ -1,0 +1,22 @@
+# Build outputs
+dist/
+build/
+
+# Dependencies
+node_modules/
+
+# Generated files
+package-lock.json
+*.min.js
+*.min.css
+
+# Config files
+.eslintrc.cjs
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db

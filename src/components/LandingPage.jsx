@@ -1,11 +1,23 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FaHome, FaSwimmer, FaHardHat, FaPhone, FaClock, FaShieldAlt, FaTruck, FaTint, FaWater, FaBars, FaTimes } from 'react-icons/fa';
+import {
+  FaHome,
+  FaSwimmer,
+  FaHardHat,
+  FaPhone,
+  FaClock,
+  FaShieldAlt,
+  FaTruck,
+  // FaTint,
+  FaWater,
+  FaBars,
+  FaTimes
+} from 'react-icons/fa';
 import EditableElement from './EditableElement';
 import EditModeIndicator from './EditModeIndicator';
 import AquaFreshLogo from './AquaFreshLogo';
 
-function LandingPage({ content, auth, isAdminRoute }) {
+function LandingPage({ content, _auth, _isAdminRoute }) {
   const [navScrolled, setNavScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const navigate = useNavigate();
@@ -22,7 +34,7 @@ function LandingPage({ content, auth, isAdminRoute }) {
 
   // Close mobile menu when clicking outside or on scroll
   useEffect(() => {
-    const handleClickOutside = (event) => {
+    const handleClickOutside = event => {
       if (mobileMenuOpen && !event.target.closest('.nav')) {
         setMobileMenuOpen(false);
       }
@@ -52,12 +64,12 @@ function LandingPage({ content, auth, isAdminRoute }) {
       rootMargin: '0px 0px -50px 0px'
     };
 
-    const observer = new IntersectionObserver((entries) => {
+    const observer = new IntersectionObserver(entries => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           entry.target.style.opacity = '1';
           entry.target.style.transform = 'translateY(0)';
-          
+
           // Animate counters
           if (entry.target.classList.contains('stat-number')) {
             const finalValue = parseInt(entry.target.textContent);
@@ -98,7 +110,8 @@ function LandingPage({ content, auth, isAdminRoute }) {
         clearInterval(timer);
       }
       // Only add '+' for numbers between 100-999 (not for years like 1998)
-      element.textContent = Math.round(currentValue) + (finalValue >= 100 && finalValue < 1000 ? '+' : '');
+      element.textContent =
+        Math.round(currentValue) + (finalValue >= 100 && finalValue < 1000 ? '+' : '');
     }, 30);
   };
 
@@ -107,9 +120,9 @@ function LandingPage({ content, auth, isAdminRoute }) {
     const handleScroll = () => {
       const scrolled = window.pageYOffset;
       const rate = scrolled * -0.5;
-      
+
       document.querySelectorAll('.floating-element').forEach((element, index) => {
-        const speed = 0.5 + (index * 0.1);
+        const speed = 0.5 + index * 0.1;
         element.style.transform = `translateY(${rate * speed}px) rotate(${scrolled * 0.01}deg)`;
       });
     };
@@ -121,13 +134,20 @@ function LandingPage({ content, auth, isAdminRoute }) {
   // Smooth scrolling for navigation links
   const handleNavClick = (e, targetId) => {
     e.preventDefault();
+
+    // Prevent navigation in edit mode
+    if (content.editMode) {
+      e.stopPropagation();
+      return false;
+    }
+
     setMobileMenuOpen(false); // Close mobile menu when nav item is clicked
     const target = document.querySelector(targetId);
     if (target) {
       // Calculate offset to account for fixed navigation height
       const navHeight = 80; // Approximate height of fixed nav
       const targetPosition = target.offsetTop - navHeight;
-      
+
       window.scrollTo({
         top: targetPosition,
         behavior: 'smooth'
@@ -137,6 +157,11 @@ function LandingPage({ content, auth, isAdminRoute }) {
 
   // Toggle mobile menu
   const toggleMobileMenu = () => {
+    // Prevent mobile menu toggle in edit mode
+    if (content.editMode) {
+      return false;
+    }
+
     console.log('Toggling mobile menu, current state:', mobileMenuOpen);
     setMobileMenuOpen(!mobileMenuOpen);
   };
@@ -145,9 +170,26 @@ function LandingPage({ content, auth, isAdminRoute }) {
     navigate('/admin');
   };
 
+  // Prevent button/link functionality when in edit mode
+  const handleButtonClick = e => {
+    if (content.editMode) {
+      e.preventDefault();
+      e.stopPropagation();
+      return false;
+    }
+  };
+
+  // Get the current phone number from content, formatted for tel: links
+  const getPhoneHref = () => {
+    const phoneNumber = content.content.phoneNumber || '780-914-8384';
+    // Remove any non-digit characters for the tel: link
+    const cleanPhone = phoneNumber.replace(/\D/g, '');
+    return `tel:${cleanPhone}`;
+  };
+
   const serviceAreas = [
     'Parkland County',
-    'Stony Plain', 
+    'Stony Plain',
     'Spruce Grove',
     'West Edmonton',
     'Leduc County',
@@ -160,30 +202,59 @@ function LandingPage({ content, auth, isAdminRoute }) {
     <>
       {/* Edit Mode Indicator */}
       {content.editMode && (
-        <EditModeIndicator 
-          onExit={content.toggleEditMode}
-          onAdmin={handleAdminAccess}
-        />
+        <EditModeIndicator onExit={content.toggleEditMode} onAdmin={handleAdminAccess} />
       )}
 
       {/* Navigation */}
-      <nav className="nav" id="nav" role="navigation" aria-label="Main navigation">
+      <nav className={`nav ${navScrolled ? 'nav-scrolled' : ''}`} id="nav" role="navigation" aria-label="Main navigation">
         <div className="nav-content">
-          <AquaFreshLogo 
-            className="logo-container" 
-            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          <AquaFreshLogo
+            className="logo-container"
+            onClick={() => {
+              if (!content.editMode) {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }
+            }}
           />
-          
+
           {/* Desktop Navigation */}
           <ul className="nav-links">
-            <li><a href="#home" onClick={(e) => handleNavClick(e, '#home')} aria-label="Go to homepage">Home</a></li>
-            <li><a href="#services" onClick={(e) => handleNavClick(e, '#services')} aria-label="View our services">Services</a></li>
-            <li><a href="#about" onClick={(e) => handleNavClick(e, '#about')} aria-label="Learn about us">About</a></li>
-            <li><a href="#contact" onClick={(e) => handleNavClick(e, '#contact')} aria-label="Contact us">Contact</a></li>
+            <li>
+              <a href="#home" onClick={e => handleNavClick(e, '#home')} aria-label="Go to homepage">
+                Home
+              </a>
+            </li>
+            <li>
+              <a
+                href="#services"
+                onClick={e => handleNavClick(e, '#services')}
+                aria-label="View our services"
+              >
+                Services
+              </a>
+            </li>
+            <li>
+              <a
+                href="#about"
+                onClick={e => handleNavClick(e, '#about')}
+                aria-label="Learn about us"
+              >
+                About
+              </a>
+            </li>
+            <li>
+              <a
+                href="#contact"
+                onClick={e => handleNavClick(e, '#contact')}
+                aria-label="Contact us"
+              >
+                Contact
+              </a>
+            </li>
           </ul>
 
           {/* Mobile Menu Button */}
-          <button 
+          <button
             className="mobile-menu-btn"
             onClick={toggleMobileMenu}
             aria-label="Toggle mobile menu"
@@ -196,10 +267,38 @@ function LandingPage({ content, auth, isAdminRoute }) {
         {/* Mobile Navigation Menu */}
         <div className={`mobile-nav ${mobileMenuOpen ? 'mobile-nav-open' : ''}`}>
           <ul className="mobile-nav-links">
-            <li><a href="#home" onClick={(e) => handleNavClick(e, '#home')} aria-label="Go to homepage">Home</a></li>
-            <li><a href="#services" onClick={(e) => handleNavClick(e, '#services')} aria-label="View our services">Services</a></li>
-            <li><a href="#about" onClick={(e) => handleNavClick(e, '#about')} aria-label="Learn about us">About</a></li>
-            <li><a href="#contact" onClick={(e) => handleNavClick(e, '#contact')} aria-label="Contact us">Contact</a></li>
+            <li>
+              <a href="#home" onClick={e => handleNavClick(e, '#home')} aria-label="Go to homepage">
+                Home
+              </a>
+            </li>
+            <li>
+              <a
+                href="#services"
+                onClick={e => handleNavClick(e, '#services')}
+                aria-label="View our services"
+              >
+                Services
+              </a>
+            </li>
+            <li>
+              <a
+                href="#about"
+                onClick={e => handleNavClick(e, '#about')}
+                aria-label="Learn about us"
+              >
+                About
+              </a>
+            </li>
+            <li>
+              <a
+                href="#contact"
+                onClick={e => handleNavClick(e, '#contact')}
+                aria-label="Contact us"
+              >
+                Contact
+              </a>
+            </li>
           </ul>
         </div>
       </nav>
@@ -215,7 +314,7 @@ function LandingPage({ content, auth, isAdminRoute }) {
               editMode={content.editMode}
               onUpdate={content.updateContent}
             />
-            
+
             <EditableElement
               tag="p"
               contentKey="heroDescription"
@@ -267,7 +366,7 @@ function LandingPage({ content, auth, isAdminRoute }) {
               </div>
             </div>
           </div>
-          
+
           <div className="hero-visual">
             <div className="visual-card">
               <div className="service-stats">
@@ -334,7 +433,12 @@ function LandingPage({ content, auth, isAdminRoute }) {
                   editMode={content.editMode}
                   onUpdate={content.updateContent}
                 />
-                <a href="tel:7809148384" className="btn btn-primary hero-cta-btn" aria-label="Call now for immediate water delivery service">
+                <a
+                  href={getPhoneHref()}
+                  className="btn btn-primary hero-cta-btn"
+                  aria-label="Call now for immediate water delivery service"
+                  onClick={handleButtonClick}
+                >
                   <span className="btn-text-mobile">
                     <EditableElement
                       tag="span"
@@ -378,7 +482,7 @@ function LandingPage({ content, auth, isAdminRoute }) {
             onUpdate={content.updateContent}
           />
         </div>
-        
+
         <div className="services-grid">
           <article className="service-card">
             <div className="service-icon" aria-hidden="true">
@@ -399,7 +503,7 @@ function LandingPage({ content, auth, isAdminRoute }) {
               onUpdate={content.updateContent}
             />
           </article>
-          
+
           <article className="service-card">
             <div className="service-icon" aria-hidden="true">
               <FaSwimmer />
@@ -419,7 +523,7 @@ function LandingPage({ content, auth, isAdminRoute }) {
               onUpdate={content.updateContent}
             />
           </article>
-          
+
           <article className="service-card">
             <div className="service-icon" aria-hidden="true">
               <FaHardHat />
@@ -462,7 +566,7 @@ function LandingPage({ content, auth, isAdminRoute }) {
                 onUpdate={content.updateContent}
               />
             </div>
-            
+
             <div className="about-features">
               <div className="about-feature">
                 <div className="about-feature-icon">
@@ -473,7 +577,7 @@ function LandingPage({ content, auth, isAdminRoute }) {
                   <p>Premium water tested for purity and safety</p>
                 </div>
               </div>
-              
+
               <div className="about-feature">
                 <div className="about-feature-icon">
                   <FaTruck />
@@ -483,7 +587,7 @@ function LandingPage({ content, auth, isAdminRoute }) {
                   <p>On-time delivery you can count on</p>
                 </div>
               </div>
-              
+
               <div className="about-feature">
                 <div className="about-feature-icon">
                   <FaClock />
@@ -499,12 +603,19 @@ function LandingPage({ content, auth, isAdminRoute }) {
               <h3 className="service-areas-title">Service Areas</h3>
               <div className="service-areas">
                 {serviceAreas.map((area, index) => (
-                  <div key={index} className="area-tag">{area}</div>
+                  <div key={index} className="area-tag">
+                    {area}
+                  </div>
                 ))}
               </div>
-              
+
               <div className="about-cta">
-                <a href="tel:7809148384" className="btn btn-primary" aria-label="Call now for water delivery">
+                <a
+                  href={getPhoneHref()}
+                  className="btn btn-primary"
+                  aria-label="Call now for water delivery"
+                  onClick={handleButtonClick}
+                >
                   <FaPhone />
                   <EditableElement
                     tag="span"
@@ -539,7 +650,7 @@ function LandingPage({ content, auth, isAdminRoute }) {
               onUpdate={content.updateContent}
             />
           </div>
-          
+
           <div className="contact-info">
             <div className="contact-item" itemScope itemType="https://schema.org/ContactPoint">
               <EditableElement
@@ -557,7 +668,7 @@ function LandingPage({ content, auth, isAdminRoute }) {
                 onUpdate={content.updateContent}
               />
             </div>
-            
+
             <div className="contact-item" itemScope itemType="https://schema.org/ContactPoint">
               <EditableElement
                 tag="h4"
@@ -574,7 +685,7 @@ function LandingPage({ content, auth, isAdminRoute }) {
                 onUpdate={content.updateContent}
               />
             </div>
-            
+
             <div className="contact-item" itemScope itemType="https://schema.org/Place">
               <EditableElement
                 tag="h4"
@@ -591,7 +702,7 @@ function LandingPage({ content, auth, isAdminRoute }) {
                 onUpdate={content.updateContent}
               />
             </div>
-            
+
             <div className="contact-item" itemScope itemType="https://schema.org/ContactPoint">
               <EditableElement
                 tag="h4"
@@ -609,9 +720,49 @@ function LandingPage({ content, auth, isAdminRoute }) {
               />
             </div>
           </div>
-          
+
+          {/* Phone Number Management - Only visible in edit mode */}
+          {content.editMode && (
+            <div
+              className="admin-phone-setting"
+              style={{
+                background: 'rgba(59, 130, 246, 0.1)',
+                padding: '15px',
+                margin: '20px 0',
+                borderRadius: '8px',
+                border: '2px dashed #3b82f6'
+              }}
+            >
+              <h4 style={{ margin: '0 0 10px 0', color: '#1e40af' }}>📞 Phone Number Settings</h4>
+              <p style={{ margin: '0 0 10px 0', fontSize: '14px', color: '#64748b' }}>
+                This phone number will be used for all call buttons on the site:
+              </p>
+              <EditableElement
+                tag="div"
+                contentKey="phoneNumber"
+                content={content.content}
+                editMode={content.editMode}
+                onUpdate={content.updateContent}
+                placeholder="Enter phone number (e.g., 780-914-8384)"
+                style={{
+                  padding: '8px 12px',
+                  background: 'white',
+                  border: '1px solid #d1d5db',
+                  borderRadius: '4px',
+                  fontFamily: 'monospace',
+                  fontSize: '16px'
+                }}
+              />
+            </div>
+          )}
+
           <div className="contact-cta">
-            <a href="tel:7809148384" className="btn btn-primary" aria-label="Call now for immediate water delivery service">
+            <a
+              href={getPhoneHref()}
+              className="btn btn-primary"
+              aria-label="Call now for immediate water delivery service"
+              onClick={handleButtonClick}
+            >
               <span className="btn-text-mobile">
                 <EditableElement
                   tag="span"
@@ -639,11 +790,14 @@ function LandingPage({ content, auth, isAdminRoute }) {
       <footer className="footer" role="contentinfo">
         <address itemScope itemType="https://schema.org/Organization">
           <p>
-            &copy; 2024 <span itemProp="name">AquaFresh Potable Water</span>. Licensed and insured bulk water hauling and cistern filling services.{' '}
+            &copy; 2024 <span itemProp="name">AquaFresh Potable Water</span>. Licensed and insured
+            bulk water hauling and cistern filling services.{' '}
             <span itemProp="address" itemScope itemType="https://schema.org/PostalAddress">
-              Serving <span itemProp="addressLocality">Parkland County</span>, <span itemProp="addressRegion">Alberta</span> and surrounding areas.
-            </span>
-            {' '}Professional water delivery, cistern filling, construction water supply, pool filling, and landscaping water services.
+              Serving <span itemProp="addressLocality">Parkland County</span>,{' '}
+              <span itemProp="addressRegion">Alberta</span> and surrounding areas.
+            </span>{' '}
+            Professional water delivery, cistern filling, construction water supply, pool filling,
+            and landscaping water services.
           </p>
         </address>
       </footer>
@@ -651,4 +805,4 @@ function LandingPage({ content, auth, isAdminRoute }) {
   );
 }
 
-export default LandingPage; 
+export default LandingPage;

@@ -1,15 +1,15 @@
-import React, { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import toast from 'react-hot-toast';
 
-function EditableElement({ 
-  tag: Tag = 'div', 
-  contentKey, 
-  content, 
-  editMode, 
-  onUpdate, 
-  className = '', 
-  placeholder = 'Click to edit...',
-  ...props 
+function EditableElement({
+  tag: Tag = 'div',
+  contentKey,
+  content,
+  editMode,
+  onUpdate,
+  className = '',
+  placeholder: _placeholder = 'Click to edit...',
+  ...props
 }) {
   const [isEditing, setIsEditing] = useState(false);
   const [localContent, setLocalContent] = useState(content[contentKey] || '');
@@ -51,7 +51,7 @@ function EditableElement({
     }
   };
 
-  const handleKeyDown = (e) => {
+  const handleKeyDown = e => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
       elementRef.current.blur();
@@ -63,15 +63,17 @@ function EditableElement({
     }
   };
 
-  const editableProps = editMode ? {
-    contentEditable: isEditing,
-    suppressContentEditableWarning: true,
-    onBlur: handleBlur,
-    onInput: handleInput,
-    onKeyDown: handleKeyDown,
-    ref: elementRef,
-    title: isEditing ? 'Press Enter to save, Escape to cancel' : 'Click to edit this content'
-  } : {};
+  const editableProps = editMode
+    ? {
+        contentEditable: isEditing,
+        suppressContentEditableWarning: true,
+        onBlur: handleBlur,
+        onInput: handleInput,
+        onKeyDown: handleKeyDown,
+        ref: elementRef,
+        title: isEditing ? 'Press Enter to save, Escape to cancel' : 'Click to edit this content'
+      }
+    : {};
 
   const combinedClassName = `
     ${className} 
@@ -92,4 +94,4 @@ function EditableElement({
   );
 }
 
-export default EditableElement; 
+export default EditableElement;
