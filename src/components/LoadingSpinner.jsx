@@ -1,4 +1,4 @@
-import React from 'react';
+// Test comment for pre-commit hook
 
 function LoadingSpinner() {
   return (
