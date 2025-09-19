@@ -187,16 +187,7 @@ function LandingPage({ content, _auth, _isAdminRoute }) {
     return `tel:${cleanPhone}`;
   };
 
-  const serviceAreas = [
-    'Parkland County',
-    'Stony Plain',
-    'Spruce Grove',
-    'West Edmonton',
-    'Leduc County',
-    'Sturgeon County',
-    'Lac Ste Anne County',
-    'Westlock County'
-  ];
+  // Service areas will be managed through content system instead of hardcoded array
 
   return (
     <>
@@ -206,7 +197,12 @@ function LandingPage({ content, _auth, _isAdminRoute }) {
       )}
 
       {/* Navigation */}
-      <nav className={`nav ${navScrolled ? 'nav-scrolled' : ''}`} id="nav" role="navigation" aria-label="Main navigation">
+      <nav
+        className={`nav ${navScrolled ? 'nav-scrolled' : ''}`}
+        id="nav"
+        role="navigation"
+        aria-label="Main navigation"
+      >
         <div className="nav-content">
           <AquaFreshLogo
             className="logo-container"
@@ -330,8 +326,20 @@ function LandingPage({ content, _auth, _isAdminRoute }) {
                   <FaClock />
                 </div>
                 <div className="feature-content">
-                  <h4>Same Day Service</h4>
-                  <p>Quick response times</p>
+                  <EditableElement
+                    tag="h4"
+                    contentKey="heroFeature0Title"
+                    content={content.content}
+                    editMode={content.editMode}
+                    onUpdate={content.updateContent}
+                  />
+                  <EditableElement
+                    tag="p"
+                    contentKey="heroFeature0Description"
+                    content={content.content}
+                    editMode={content.editMode}
+                    onUpdate={content.updateContent}
+                  />
                 </div>
               </div>
               <div className="feature-item">
@@ -339,8 +347,20 @@ function LandingPage({ content, _auth, _isAdminRoute }) {
                   <FaShieldAlt />
                 </div>
                 <div className="feature-content">
-                  <h4>Licensed & Insured</h4>
-                  <p>Professional service</p>
+                  <EditableElement
+                    tag="h4"
+                    contentKey="heroFeature1Title"
+                    content={content.content}
+                    editMode={content.editMode}
+                    onUpdate={content.updateContent}
+                  />
+                  <EditableElement
+                    tag="p"
+                    contentKey="heroFeature1Description"
+                    content={content.content}
+                    editMode={content.editMode}
+                    onUpdate={content.updateContent}
+                  />
                 </div>
               </div>
               <div className="feature-item">
@@ -348,8 +368,20 @@ function LandingPage({ content, _auth, _isAdminRoute }) {
                   <FaTruck />
                 </div>
                 <div className="feature-content">
-                  <h4>Modern Fleet</h4>
-                  <p>Clean delivery trucks</p>
+                  <EditableElement
+                    tag="h4"
+                    contentKey="heroFeature2Title"
+                    content={content.content}
+                    editMode={content.editMode}
+                    onUpdate={content.updateContent}
+                  />
+                  <EditableElement
+                    tag="p"
+                    contentKey="heroFeature2Description"
+                    content={content.content}
+                    editMode={content.editMode}
+                    onUpdate={content.updateContent}
+                  />
                 </div>
               </div>
             </div>
@@ -358,11 +390,23 @@ function LandingPage({ content, _auth, _isAdminRoute }) {
             <div className="trust-badges">
               <div className="trust-badge">
                 <FaWater className="trust-icon" />
-                <span>Potable Water Certified</span>
+                <EditableElement
+                  tag="span"
+                  contentKey="trustBadge0Text"
+                  content={content.content}
+                  editMode={content.editMode}
+                  onUpdate={content.updateContent}
+                />
               </div>
               <div className="trust-badge">
                 <FaPhone className="trust-icon" />
-                <span>24/7 Available</span>
+                <EditableElement
+                  tag="span"
+                  contentKey="trustBadge1Text"
+                  content={content.content}
+                  editMode={content.editMode}
+                  onUpdate={content.updateContent}
+                />
               </div>
             </div>
           </div>
@@ -573,8 +617,20 @@ function LandingPage({ content, _auth, _isAdminRoute }) {
                   <FaShieldAlt />
                 </div>
                 <div className="about-feature-text">
-                  <h4>Quality Assurance</h4>
-                  <p>Premium water tested for purity and safety</p>
+                  <EditableElement
+                    tag="h4"
+                    contentKey="aboutFeature0Title"
+                    content={content.content}
+                    editMode={content.editMode}
+                    onUpdate={content.updateContent}
+                  />
+                  <EditableElement
+                    tag="p"
+                    contentKey="aboutFeature0Description"
+                    content={content.content}
+                    editMode={content.editMode}
+                    onUpdate={content.updateContent}
+                  />
                 </div>
               </div>
 
@@ -583,8 +639,20 @@ function LandingPage({ content, _auth, _isAdminRoute }) {
                   <FaTruck />
                 </div>
                 <div className="about-feature-text">
-                  <h4>Reliable Delivery</h4>
-                  <p>On-time delivery you can count on</p>
+                  <EditableElement
+                    tag="h4"
+                    contentKey="aboutFeature1Title"
+                    content={content.content}
+                    editMode={content.editMode}
+                    onUpdate={content.updateContent}
+                  />
+                  <EditableElement
+                    tag="p"
+                    contentKey="aboutFeature1Description"
+                    content={content.content}
+                    editMode={content.editMode}
+                    onUpdate={content.updateContent}
+                  />
                 </div>
               </div>
 
@@ -593,20 +661,98 @@ function LandingPage({ content, _auth, _isAdminRoute }) {
                   <FaClock />
                 </div>
                 <div className="about-feature-text">
-                  <h4>24/7 Service</h4>
-                  <p>Available when you need us most</p>
+                  <EditableElement
+                    tag="h4"
+                    contentKey="aboutFeature2Title"
+                    content={content.content}
+                    editMode={content.editMode}
+                    onUpdate={content.updateContent}
+                  />
+                  <EditableElement
+                    tag="p"
+                    contentKey="aboutFeature2Description"
+                    content={content.content}
+                    editMode={content.editMode}
+                    onUpdate={content.updateContent}
+                  />
                 </div>
               </div>
             </div>
 
             <div className="service-areas-compact">
-              <h3 className="service-areas-title">Service Areas</h3>
+              <EditableElement
+                tag="h3"
+                className="service-areas-title"
+                contentKey="serviceAreasTitle"
+                content={content.content}
+                editMode={content.editMode}
+                onUpdate={content.updateContent}
+              />
               <div className="service-areas">
-                {serviceAreas.map((area, index) => (
-                  <div key={index} className="area-tag">
-                    {area}
-                  </div>
-                ))}
+                <EditableElement
+                  tag="div"
+                  className="area-tag"
+                  contentKey="serviceArea0"
+                  content={content.content}
+                  editMode={content.editMode}
+                  onUpdate={content.updateContent}
+                />
+                <EditableElement
+                  tag="div"
+                  className="area-tag"
+                  contentKey="serviceArea1"
+                  content={content.content}
+                  editMode={content.editMode}
+                  onUpdate={content.updateContent}
+                />
+                <EditableElement
+                  tag="div"
+                  className="area-tag"
+                  contentKey="serviceArea2"
+                  content={content.content}
+                  editMode={content.editMode}
+                  onUpdate={content.updateContent}
+                />
+                <EditableElement
+                  tag="div"
+                  className="area-tag"
+                  contentKey="serviceArea3"
+                  content={content.content}
+                  editMode={content.editMode}
+                  onUpdate={content.updateContent}
+                />
+                <EditableElement
+                  tag="div"
+                  className="area-tag"
+                  contentKey="serviceArea4"
+                  content={content.content}
+                  editMode={content.editMode}
+                  onUpdate={content.updateContent}
+                />
+                <EditableElement
+                  tag="div"
+                  className="area-tag"
+                  contentKey="serviceArea5"
+                  content={content.content}
+                  editMode={content.editMode}
+                  onUpdate={content.updateContent}
+                />
+                <EditableElement
+                  tag="div"
+                  className="area-tag"
+                  contentKey="serviceArea6"
+                  content={content.content}
+                  editMode={content.editMode}
+                  onUpdate={content.updateContent}
+                />
+                <EditableElement
+                  tag="div"
+                  className="area-tag"
+                  contentKey="serviceArea7"
+                  content={content.content}
+                  editMode={content.editMode}
+                  onUpdate={content.updateContent}
+                />
               </div>
 
               <div className="about-cta">

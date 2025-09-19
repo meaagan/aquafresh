@@ -51,7 +51,34 @@ const defaultContent = {
   stat2Number: '6',
   stat2Label: 'Counties Served',
   stat3Number: 'Family',
-  stat3Label: 'Owned & Operated'
+  stat3Label: 'Owned & Operated',
+  // Hero Features
+  heroFeature0Title: 'Same Day Service',
+  heroFeature0Description: 'Quick response times',
+  heroFeature1Title: 'Licensed & Insured',
+  heroFeature1Description: 'Professional service',
+  heroFeature2Title: 'Modern Fleet',
+  heroFeature2Description: 'Clean delivery trucks',
+  // Trust Badges
+  trustBadge0Text: 'Potable Water Certified',
+  trustBadge1Text: '24/7 Available',
+  // About Features
+  aboutFeature0Title: 'Quality Assurance',
+  aboutFeature0Description: 'Premium water tested for purity and safety',
+  aboutFeature1Title: 'Reliable Delivery',
+  aboutFeature1Description: 'On-time delivery you can count on',
+  aboutFeature2Title: '24/7 Service',
+  aboutFeature2Description: 'Available when you need us most',
+  // Service Areas
+  serviceAreasTitle: 'Service Areas',
+  serviceArea0: 'Parkland County',
+  serviceArea1: 'Stony Plain',
+  serviceArea2: 'Spruce Grove',
+  serviceArea3: 'West Edmonton',
+  serviceArea4: 'Leduc County',
+  serviceArea5: 'Sturgeon County',
+  serviceArea6: 'Lac Ste Anne County',
+  serviceArea7: 'Westlock County'
 };
 
 export function useContent() {
