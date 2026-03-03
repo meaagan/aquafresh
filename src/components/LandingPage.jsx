@@ -162,7 +162,6 @@ function LandingPage({ content, _auth, _isAdminRoute }) {
       return false;
     }
 
-    console.log('Toggling mobile menu, current state:', mobileMenuOpen);
     setMobileMenuOpen(!mobileMenuOpen);
   };
 

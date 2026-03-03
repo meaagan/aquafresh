@@ -13,6 +13,7 @@ function EditableElement({
 }) {
   const [isEditing, setIsEditing] = useState(false);
   const [localContent, setLocalContent] = useState(content[contentKey] || '');
+  const [originalContent, setOriginalContent] = useState(''); // Store original content for comparison
   const elementRef = useRef(null);
 
   useEffect(() => {
@@ -21,6 +22,7 @@ function EditableElement({
 
   const handleClick = () => {
     if (editMode && !isEditing) {
+      setOriginalContent(localContent); // Store the original content when editing starts
       setIsEditing(true);
       // Set the innerHTML after making it editable
       setTimeout(() => {
@@ -37,7 +39,7 @@ function EditableElement({
     if (isEditing) {
       setIsEditing(false);
       const newContent = elementRef.current.innerHTML;
-      if (newContent !== localContent) {
+      if (newContent !== originalContent) {
         setLocalContent(newContent);
         onUpdate(contentKey, newContent);
       }
@@ -45,10 +47,8 @@ function EditableElement({
   };
 
   const handleInput = () => {
-    if (isEditing && elementRef.current) {
-      const newContent = elementRef.current.innerHTML;
-      setLocalContent(newContent);
-    }
+    // Input events are handled but we don't need to do anything here
+    // Content is captured on blur
   };
 
   const handleKeyDown = e => {

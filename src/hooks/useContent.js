@@ -86,94 +86,78 @@ export function useContent() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [editMode, setEditMode] = useState(false);
-  const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
 
   // Load content from Firebase
   useEffect(() => {
     loadContent();
+
+    // Cleanup auto-save timer on unmount
+    return () => {
+      if (window.autoSaveTimer) {
+        clearTimeout(window.autoSaveTimer);
+      }
+    };
   }, []);
 
   const loadContent = async () => {
     try {
-      console.log('🔄 Starting Firebase content load...');
       setLoading(true);
       setError(null);
 
       const docRef = doc(db, 'cms', 'content');
-      console.log('📄 Document reference created:', docRef.path);
-
       const docSnap = await getDoc(docRef);
-      console.log('📥 Document snapshot received:', { exists: docSnap.exists() });
 
       if (docSnap.exists()) {
         const firebaseContent = docSnap.data();
-        console.log('✅ Firebase content loaded:', Object.keys(firebaseContent));
         setContent({ ...defaultContent, ...firebaseContent });
-        // Content loads silently for regular users
       } else {
-        console.log('⚠️ No content document found in Firebase, using defaults');
-        console.log('🔧 Creating initial document with default content...');
         setContent(defaultContent);
-        // Try to create the document with default content
+        // Create initial document with default content
         await setDoc(docRef, defaultContent);
-        console.log('✅ Default content saved to Firebase');
-        // Default content creation is silent for users
       }
     } catch (error) {
-      console.error('❌ Error loading content from Firebase:', error);
-      console.error('Error details:', {
-        code: error.code,
-        message: error.message,
-        stack: error.stack
-      });
+      console.error('Error loading content from Firebase:', error);
       setError(error.message);
-      // Firebase errors are logged but not shown to regular users
-      // Admin panel will show errors if needed
-      // Fallback to default content
       setContent(defaultContent);
     } finally {
       setLoading(false);
-      console.log('🏁 Firebase content load completed');
     }
   };
 
   const saveContent = async () => {
     try {
       setError(null);
-
       const docRef = doc(db, 'cms', 'content');
       await setDoc(docRef, content, { merge: true });
-
-      setHasUnsavedChanges(false);
-      toast.success('Content saved to Firebase! ✅');
-      console.log('Content saved to Firebase');
       return true;
     } catch (error) {
       console.error('Error saving to Firebase:', error);
       setError(error.message);
-      toast.error('Error saving to Firebase! ❌');
+      toast.error('Error saving changes! ❌');
       return false;
     }
   };
 
   const updateContent = (key, value) => {
+    // Update content immediately
     setContent(prev => ({
       ...prev,
       [key]: value
     }));
-    setHasUnsavedChanges(true);
 
-    // Auto-save after 2 seconds of inactivity
-    clearTimeout(window.contentSaveTimeout);
-    window.contentSaveTimeout = setTimeout(() => {
-      saveContent();
+    // Auto-save with 2-second debounce
+    clearTimeout(window.autoSaveTimer);
+    window.autoSaveTimer = setTimeout(async () => {
+      const success = await saveContent();
+      if (success) {
+        toast.success('Changes saved automatically ✅');
+      }
     }, 2000);
   };
 
   const toggleEditMode = () => {
-    if (editMode && hasUnsavedChanges) {
-      saveContent();
-    }
+    // Don't auto-save when toggling edit mode
+    // User will manually save using the save button
     setEditMode(!editMode);
   };
 
@@ -197,7 +181,6 @@ export function useContent() {
       const imported = JSON.parse(text);
 
       setContent({ ...defaultContent, ...imported });
-      setHasUnsavedChanges(true);
 
       const success = await saveContent();
       if (success) {
@@ -217,7 +200,6 @@ export function useContent() {
       )
     ) {
       setContent(defaultContent);
-      setHasUnsavedChanges(true);
       await saveContent();
       toast.success('Content reset to defaults! 🔄');
     }
@@ -228,7 +210,6 @@ export function useContent() {
     loading,
     error,
     editMode,
-    hasUnsavedChanges,
     updateContent,
     saveContent,
     loadContent,

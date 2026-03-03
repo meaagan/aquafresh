@@ -151,11 +151,7 @@ function AdminPanel({ content, auth, onBackToSite }) {
                   >
                     {content.editMode ? 'Exit Edit Mode' : 'Enable Edit Mode'}
                   </button>
-                  <button
-                    className="admin-btn secondary"
-                    onClick={handleSave}
-                    disabled={!content.hasUnsavedChanges}
-                  >
+                  <button className="admin-btn secondary" onClick={handleSave}>
                     Save All Changes
                   </button>
                   <button className="admin-btn tertiary" onClick={handleExport}>
@@ -185,9 +181,8 @@ function AdminPanel({ content, auth, onBackToSite }) {
                 <div className="status-info">
                   <p>
                     {content.editMode
-                      ? 'Edit mode enabled! Switch to site view and click on any text to edit it.'
+                      ? 'Edit mode enabled! Switch to site view and click on any text to edit it. Changes auto-save after 2 seconds.'
                       : 'Ready to edit content. Enable edit mode to start making changes.'}
-                    {content.hasUnsavedChanges && ' (You have unsaved changes)'}
                   </p>
                 </div>
               </div>
